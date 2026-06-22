@@ -241,15 +241,15 @@ input[type=range]{width:100%;accent-color:var(--blue);cursor:pointer;height:5px;
     <div><div class="t-logo-name">Pipeline Hero</div><div class="t-logo-sub">The Quarter Release</div></div>
   </div>
   <nav class="phase-nav" id="pnav">
-    <div class="pn active" data-p="1"><span class="pn-num">1. Fleet Assembly</span><span class="pn-sub">Montagem da Frota</span></div>
-    <div class="pn" data-p="2"><span class="pn-num">2. Diagnóstico</span><span class="pn-sub">por Sorteio</span></div>
-    <div class="pn" data-p="3"><span class="pn-num">3. Bolsa de Valores</span><span class="pn-sub">Investimentos</span></div>
-    <div class="pn" data-p="4"><span class="pn-num">4. Refatoração</span><span class="pn-sub">Plano de Ação</span></div>
+    <div class="pn active" data-p="1"><span class="pn-num">Fleet Assembly</span><span class="pn-sub">Montagem da Frota</span></div>
+    <div class="pn" data-p="2"><span class="pn-num">Diagnóstico</span><span class="pn-sub">por Sorteio</span></div>
+    <div class="pn" data-p="3"><span class="pn-num">Bolsa de Valores</span><span class="pn-sub">Investimentos</span></div>
+    <div class="pn" data-p="4"><span class="pn-num">Refatoração</span><span class="pn-sub">Plano de Ação</span></div>
   </nav>
   <div class="t-right">
     <div style="font-size:11px;color:var(--text2);display:flex;align-items:center;gap:5px">
       Sala: <span class="t-sala-code" id="topCode">—</span>
-      <span class="t-copy" onclick="copySala()">⧉</span>
+      <span class="t-copy" onclick="copySala()">⊞</span>
     </div>
     <div>
       <div class="t-timer-label">Tempo da fase</div>
@@ -268,13 +268,13 @@ input[type=range]{width:100%;accent-color:var(--blue);cursor:pointer;height:5px;
     <div class="screen active" id="sLobby">
       <div class="lobby-full">
         <div class="lobby-box">
-          <div class="lobby-badge">⚡ Q2 2025 — Retrospectiva Trimestral</div>
+          <div class="lobby-badge">Q2 2025 — Retrospectiva Trimestral</div>
           <h1 class="lobby-title">Pipeline Hero<br><em>The Quarter Release</em></h1>
           <p class="lobby-desc">Gamifique sua retro: diagnóstico anônimo, investimento coletivo e plano de ação real — em tempo real com todo o time.</p>
           <div class="lobby-card">
             <div class="role-switch">
-              <div class="role-btn active" id="roleF" onclick="setRole('facilitator')">🎙️ Facilitador<br><span style="font-size:10px;font-weight:400">Criar sala</span></div>
-              <div class="role-btn" id="roleP" onclick="setRole('player')">🎮 Jogador<br><span style="font-size:10px;font-weight:400">Entrar na sala</span></div>
+              <div class="role-btn active" id="roleF" onclick="setRole('facilitator')">Facilitador<br><span style="font-size:10px;font-weight:400">Criar sala</span></div>
+              <div class="role-btn" id="roleP" onclick="setRole('player')">Jogador<br><span style="font-size:10px;font-weight:400">Entrar na sala</span></div>
             </div>
             <div class="input-group">
               <div class="input-label">Seu nome</div>
@@ -297,17 +297,17 @@ input[type=range]{width:100%;accent-color:var(--blue);cursor:pointer;height:5px;
           <div style="text-align:center;margin-bottom:24px">
             <div style="font-size:13px;color:var(--text2);margin-bottom:6px">Compartilhe o código com o time</div>
             <div class="wr-sala-code" id="wrCode">—</div>
-            <button class="btn btn-sec" style="margin-top:8px" onclick="copySala()">📋 Copiar link da sala</button>
+            <button class="btn btn-sec" style="margin-top:8px" onclick="copySala()">Copiar link da sala</button>
           </div>
           <div style="display:flex;align-items:center;justify-content:center;gap:6px;font-size:12px;color:var(--green);font-weight:500;margin-bottom:14px">
             <span class="online-dot"></span><span id="wrCount">0</span> jogadores conectados
           </div>
           <div id="wrPlayers"></div>
           <div id="btnStartWrap" style="display:none;margin-top:16px">
-            <button class="btn btn-green w100" style="padding:12px;font-size:14px;border-radius:var(--r)" onclick="startGame()">🚀 Iniciar Jogo →</button>
+            <button class="btn btn-green w100" style="padding:12px;font-size:14px;border-radius:var(--r)" onclick="startGame()">Iniciar Jogo →</button>
             <p style="text-align:center;font-size:11px;color:var(--text3);margin-top:6px">Apenas o facilitador pode iniciar</p>
           </div>
-          <div id="waitMsg" style="text-align:center;font-size:12px;color:var(--text2);margin-top:16px">⏳ Aguardando o facilitador iniciar...</div>
+          <div id="waitMsg" style="text-align:center;font-size:12px;color:var(--text2);margin-top:16px">Aguardando o facilitador iniciar...</div>
         </div>
       </div>
     </div>
@@ -317,7 +317,7 @@ input[type=range]{width:100%;accent-color:var(--blue);cursor:pointer;height:5px;
       <div class="flex aic jb mb4">
         <div><h1 class="pg-title">1. The Fleet Assembly</h1><p class="pg-sub" style="margin-bottom:0">Arraste seu avatar para os projetos em que você atuou.</p></div>
       </div>
-      <div class="info-bar">ℹ️ Apenas <b>você</b> pode mover o seu avatar. Pode participar de mais de um projeto.</div>
+      <div class="info-bar">Apenas <b>você</b> pode mover o seu avatar. Pode participar de mais de um projeto.</div>
       <div class="fleet-grid" id="fleetGrid"></div>
       <div class="spawn-lbl">Frota Disponível <span style="font-weight:400;color:var(--text3)">(arraste seu avatar)</span></div>
       <div class="spawn-area" id="spawnArea"></div>
@@ -326,10 +326,10 @@ input[type=range]{width:100%;accent-color:var(--blue);cursor:pointer;height:5px;
     <!-- FASE 2 DIAG -->
     <div class="screen" id="s2">
       <div class="flex aic jb mb4">
-        <div><h1 class="pg-title">2. Diagnóstico por Sorteio</h1><p class="pg-sub" style="margin-bottom:0" id="s2sub">Aguardando o facilitador sortear uma release.</p></div>
+        <div><h1 class="pg-title">02 Diagnóstico por Sorteio</h1><p class="pg-sub" style="margin-bottom:0" id="s2sub">Aguardando o facilitador sortear uma release.</p></div>
         <div class="flex gap2" id="facDiagBtns" style="display:none">
-          <button class="btn btn-sec" onclick="sortear()">↻ Sortear Release</button>
-          <button class="btn btn-primary" id="btnEnviar" onclick="enviar()" disabled>→ Enviar Diagnóstico</button>
+          <button class="btn btn-sec" onclick="sortear()">Sortear Release</button>
+          <button class="btn btn-primary" id="btnEnviar" onclick="enviar()" disabled>Enviar Diagnóstico</button>
         </div>
       </div>
       <div class="deck-wrap" id="deckWrap"></div>
@@ -341,15 +341,15 @@ input[type=range]{width:100%;accent-color:var(--blue);cursor:pointer;height:5px;
         </div>
         <div id="diagCols"></div>
         <div id="sendArea" class="send-area" style="display:none">
-          <button class="btn btn-primary" style="padding:10px 32px;font-size:13px;border-radius:var(--r)" onclick="enviar()">→ Enviar Diagnóstico</button>
-          <div class="anon-note">🔒 Suas respostas são anônimas</div>
+          <button class="btn btn-primary" style="padding:10px 32px;font-size:13px;border-radius:var(--r)" onclick="enviar()">Enviar Diagnóstico</button>
+          <div class="anon-note">Respostas anônimas e agregadas</div>
         </div>
         <div id="resSection" style="display:none">
           <div class="res-section">
             <div class="res-hdr">
-              <div class="res-title">📊 Resultado — <span id="resProj"></span></div>
+              <div class="res-title">Resultado — <span id="resProj"></span></div>
               <div class="flex gap2" id="facNextBtns" style="display:none">
-                <button class="btn btn-sec" id="btnNext" onclick="nextRelease()">Próxima Release →</button>
+                <button class="btn btn-sec" id="btnNext" onclick="nextRelease()">Próxima Release</button>
                 <button class="btn btn-primary" id="btnMkt" onclick="goMarket()" style="display:none">Ir para Bolsa →</button>
               </div>
             </div>
@@ -378,12 +378,12 @@ input[type=range]{width:100%;accent-color:var(--blue);cursor:pointer;height:5px;
     <!-- FASE 5 WIN -->
     <div class="screen" id="s5">
       <div class="win-wrap">
-        <div style="font-size:50px;margin-bottom:10px">🎉</div>
+        <div style="font-size:50px;margin-bottom:10px"></div>
         <h1 style="font-size:26px;font-weight:800;letter-spacing:-1px;margin-bottom:6px">Quarter Build Successful</h1>
         <p style="font-size:14px;color:var(--text2);margin-bottom:28px">Produção Estável — <span id="winDate"></span></p>
         <div class="win-badges" id="winBadges"></div>
         <div class="md-pre" id="mdPre"></div>
-        <button class="btn btn-primary" style="padding:11px 24px;font-size:14px;border-radius:var(--r);margin:0 auto;display:flex" onclick="copyMd()">📋 Copiar Resumo em Markdown</button>
+        <button class="btn btn-primary" style="padding:11px 24px;font-size:14px;border-radius:var(--r);margin:0 auto;display:flex" onclick="copyMd()">Copiar Resumo em Markdown</button>
       </div>
     </div>
 
@@ -420,11 +420,11 @@ const db = getDatabase(fbApp);
 
 /* ── DATA ── */
 const PROJS = [
-  {id:"p1",name:"Módulo Regulação de Urgência",desc:"Plataforma principal de regulação e triagem.",e:"🏥",type:"CROSS",tc:"tc"},
-  {id:"p2",name:"Checklists DINAP",desc:"Digitalização e gestão de checklists.",e:"✅",type:"CROSS",tc:"tc"},
-  {id:"p3",name:"Leitor DT50h",desc:"Integração do leitor biométrico DT50h.",e:"📡",type:"",tc:""},
-  {id:"p4",name:"Desfibrilador Externo",desc:"Melhorias na experiência do desfibrilador.",e:"❤️",type:"MELHORIA",tc:"tm"},
-  {id:"p5",name:"Custo Operacional",desc:"Redução de custos e otimizações operacionais.",e:"💰",type:"DÉBITO",tc:"td"},
+  {id:"p1",name:"Módulo Regulação de Urgência",desc:"Plataforma principal de regulação e triagem.",e:"+",type:"CROSS",tc:"tc"},
+  {id:"p2",name:"Checklists DINAP",desc:"Digitalização e gestão de checklists.",e:"·",type:"CROSS",tc:"tc"},
+  {id:"p3",name:"Leitor DT50h",desc:"Integração do leitor biométrico DT50h.",e:"◎",type:"",tc:""},
+  {id:"p4",name:"Desfibrilador Externo",desc:"Melhorias na experiência do desfibrilador.",e:"◈",type:"MELHORIA",tc:"tm"},
+  {id:"p5",name:"Custo Operacional",desc:"Redução de custos e otimizações operacionais.",e:"◇",type:"DÉBITO",tc:"td"},
 ];
 const PRIDES=[
   {i:"🧹",l:"Clean Code"},{i:"🛡️",l:"Zero Regressão (QA)"},{i:"🏗️",l:"Arquitetura Sólida"},
@@ -491,7 +491,7 @@ window.setRole=function(r){
 /* ── ENTER ── */
 window.entrar=async function(){
   const name=document.getElementById("inputName").value.trim();
-  if(!name){toast("⚠️ Digite seu nome");return}
+  if(!name){toast("Digite seu nome");return}
   myName=name; myId=genId();
   myColor=COLORS[Math.floor(Math.random()*COLORS.length)];
   const ini=name.split(" ").map(w=>w[0]).join("").toUpperCase().substr(0,2);
@@ -505,11 +505,11 @@ window.entrar=async function(){
     });
   } else {
     const code=document.getElementById("inputCode").value.trim().toUpperCase();
-    if(code.length<7){toast("⚠️ Digite o código completo (ex: XYZ-123)");return}
+    if(code.length<7){toast("Digite o código completo (ex: XYZ-123)");return}
     sala=code;
     const snap=await get(ref(db,`salas/${sala}`));
-    if(!snap.exists()){toast("❌ Sala não encontrada");return}
-    if(snap.val().phase!=="waiting"){toast("❌ Jogo já começou");return}
+    if(!snap.exists()){toast("Sala não encontrada");return}
+    if(snap.val().phase!=="waiting"){toast("Jogo já começou");return}
   }
 
   await set(ref(db,`salas/${sala}/players/${myId}`),{
@@ -549,7 +549,7 @@ function updateTopbar(){
   document.getElementById("topCode").textContent=sala||"—";
   document.getElementById("sbCode").textContent=sala||"—";
   document.getElementById("sbOnline").textContent=players().filter(p=>p.online).length;
-  document.getElementById("myBadge").textContent=isFac()?"🎙️ Facilitador":"🎮 Jogador";
+  document.getElementById("myBadge").textContent=isFac()?"Facilitador":"Jogador";
   const pm={waiting:0,fleet:1,diag:2,market:3,refactor:4,done:5};
   const cur=pm[gs.phase]||0;
   document.querySelectorAll(".pn").forEach(el=>{
@@ -563,7 +563,7 @@ function updateSB(){
   const h={fleet:"Arraste seu avatar",diag:"Selecione até 2 opções por coluna",market:"Use o slider para investir DevPoints",refactor:"Preencha todos os Hotfixes"};
   document.getElementById("sbHint").textContent=h[gs.phase]||"";
 }
-window.copySala=()=>navigator.clipboard.writeText(location.href.split("?")[0]+"?sala="+sala).then(()=>toast("✅ Link copiado!"));
+window.copySala=()=>navigator.clipboard.writeText(location.href.split("?")[0]+"?sala="+sala).then(()=>toast("Link copiado"));
 window.exitSala=()=>{if(confirm("Sair da sala?")){set(ref(db,`salas/${sala}/players/${myId}/online`),false);location.reload()}};
 
 /* ═══════════════ WAITING ═══════════════ */
@@ -626,7 +626,7 @@ window.dDr=async(e,pid)=>{
   const cur=(gs.fleetMap||{})[pid]||{};
   if(cur[myId]){toast("Você já está neste projeto!");return}
   await set(ref(db,`salas/${sala}/fleetMap/${pid}/${myId}`),true);
-  toast("✅ Avatar adicionado ao projeto!");
+  toast("Avatar adicionado ao projeto");
 };
 window.lockFleet=async()=>{
   if(!isFac())return;
@@ -744,7 +744,7 @@ window.enviar=async()=>{
   const pains=selN.map(i=>PAINS[i].l);
   const custom=document.getElementById("customLog")?.value?.trim()||null;
   await set(ref(db,`salas/${sala}/submissions/${pid}/${myId}`),{prides,pains,custom,ts:serverTimestamp()});
-  toast("✅ Diagnóstico enviado!");
+  toast("Diagnóstico enviado");
   // auto-show results if all operators submitted (facilitator checks)
   if(isFac()){
     const snap=await get(ref(db,`salas/${sala}/submissions/${pid}`));
@@ -809,12 +809,12 @@ function renderMarket(){
         <div class="slider-big" id="slDisp">50 <span style="font-size:16px;font-weight:500;color:var(--text2)">💲 DevPoints</span></div>
         <input type="range" min="0" max="100" value="50" oninput="sliderVal=parseInt(this.value);document.getElementById('slDisp').innerHTML=this.value+' <span style=\'font-size:16px;font-weight:500;color:var(--text2)\'>💲 DevPoints</span>'">
         <div class="slider-ends"><span>0</span><span>100</span></div>
-        <div class="invest-tip"><div>⭐</div><div><div style="font-size:12px;font-weight:600;color:var(--blue)">Seu investimento faz a diferença!</div><div style="font-size:11px;color:var(--blue);opacity:.8">Seus DevPoints serão somados aos do time.</div></div></div>
+        <div class="invest-tip"><div>·</div><div><div style="font-size:12px;font-weight:600;color:var(--blue)">Seu investimento faz a diferença!</div><div style="font-size:11px;color:var(--blue);opacity:.8">Seus DevPoints serão somados aos do time.</div></div></div>
         <button class="btn btn-primary w100" style="padding:11px;border-radius:var(--r)" id="invBtn" onclick="confirmInvest()">Confirmar Investimento</button>
         <div style="font-size:11px;color:var(--text3);text-align:center;margin-top:6px">Você pode alterar até o fim da fase.</div>
       </div>
       <div class="mkt-stats">
-        <div class="ms-desc">👥 Todos participam, todos constroem. Seu DevPoint ajuda a priorizar o próximo quarter.</div>
+        <div class="ms-desc">Todos participam, todos constroem. Seu DevPoint ajuda a priorizar o próximo quarter.</div>
         <div class="ms-div"></div>
         <div class="ms-item"><div class="ms-n">${players().filter(p=>p.online).length}</div><div class="ms-l">Online agora</div></div>
         <div class="ms-div"></div>
@@ -856,16 +856,16 @@ function renderRefactor(){
   }).join("");
 
   document.getElementById("refactorContent").innerHTML=`
-    <div class="final-rank"><div style="display:flex;align-items:center;gap:8px;margin-bottom:14px"><b style="font-size:13px">📊 Ranking Final de Gargalos</b><span style="font-size:11px;color:var(--text2)">(Consolidado do Trimestre)</span></div>${rkH}</div>
+    <div class="final-rank"><div style="display:flex;align-items:center;gap:8px;margin-bottom:14px"><b style="font-size:13px">Ranking Final de Gargalos</b><span style="font-size:11px;color:var(--text2)">(Consolidado do Trimestre)</span></div>${rkH}</div>
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
-      <b style="font-size:13px">Plano de Ação (Hotfixes)</b>
-      ${!isFac()?`<span style="font-size:11px;color:var(--text2)">🔒 Apenas o Facilitador edita</span>`:""}
+      <b style="font-size:13px">Plano de Ação</b>
+      ${!isFac()?`<span style="font-size:11px;color:var(--text2)">Somente o Facilitador edita</span>`:""}
     </div>
     <div class="hf-cards">${hfH}</div>
     ${isFac()?`<div class="fin-bar">
-      <button class="btn btn-green" style="padding:11px 32px;font-size:14px;border-radius:var(--r)" onclick="finalizar()">✅ Finalizar Plano de Ação</button>
-      <div style="font-size:11px;color:var(--text3);display:flex;align-items:center;gap:4px">🔒 Todos os campos do Top 3 devem estar preenchidos.</div>
-    </div>`:`<div style="text-align:center;padding:16px;font-size:12px;color:var(--text2)">⏳ Aguardando o Facilitador finalizar...</div>`}`;
+      <button class="btn btn-green" style="padding:11px 32px;font-size:14px;border-radius:var(--r)" onclick="finalizar()">Finalizar Plano de Ação</button>
+      <div style="font-size:11px;color:var(--text3);display:flex;align-items:center;gap:4px">Todos os campos do Top 3 devem estar preenchidos.</div>
+    </div>`:`<div style="text-align:center;padding:16px;font-size:12px;color:var(--text2)">Aguardando o Facilitador finalizar...</div>`}`;
 }
 window.updateHF=async(i,field,value)=>{
   hotfixData[i][field]=value;
@@ -873,7 +873,7 @@ window.updateHF=async(i,field,value)=>{
 };
 window.finalizar=async()=>{
   const all=hotfixData.slice(0,3).every(h=>h.what&&h.who&&h.when);
-  if(!all){toast("⚠️ Preencha todos os campos antes de finalizar.");return}
+  if(!all){toast("Preencha todos os campos antes de finalizar.");return}
   await update(ref(db,`salas/${sala}`),{phase:"done"});
 };
 
@@ -885,7 +885,7 @@ function renderWin(){
   const p2=pl.filter(p=>p!==p1)[0]||p1;
   const p3=pl.filter(p=>p!==p1&&p!==p2)[0]||p1;
   document.getElementById("winBadges").innerHTML=[
-    {m:"🐛",t:"The Bug Hunter",p:p1},{m:"😇",t:"The Angel Investor",p:p2},{m:"👑",t:"The Refactor King",p:p3}
+    {m:"·",t:"The Bug Hunter",p:p1},{m:"·",t:"The Angel Investor",p:p2},{m:"·",t:"The Refactor King",p:p3}
   ].map(b=>`<div class="wb"><div style="font-size:28px;margin-bottom:7px">${b.m}</div><div style="font-size:12px;font-weight:700;margin-bottom:8px">${b.t}</div><div class="wb-av" style="background:${b.p.color}">${b.p.initials}</div><div style="font-size:13px;font-weight:600;color:var(--blue)">${b.p.name}</div></div>`).join("");
   document.getElementById("mdPre").textContent=genMd();
 }
@@ -924,7 +924,7 @@ function genMd(){
 `;
   return md;
 }
-window.copyMd=()=>navigator.clipboard.writeText(genMd()).then(()=>toast("✅ Markdown copiado!"));
+window.copyMd=()=>navigator.clipboard.writeText(genMd()).then(()=>toast("Markdown copiado"));
 
 /* ═══════════════ SIDEBAR ═══════════════ */
 function renderSidebar(){
@@ -942,19 +942,19 @@ function sbFleet(){
   const pl=players();const fm=gs.fleetMap||{};
   const placed=pl.filter(p=>Object.values(fm).some(ids=>ids&&ids[p.id])).length;
   const pct=Math.round(placed/pl.length*100)||0;
-  return `<div class="sb-block"><div class="sb-title">ℹ️ Sobre esta fase</div>
+  return `<div class="sb-block"><div class="sb-title">Sobre esta fase</div>
     <div style="font-size:12px;color:var(--text2);display:flex;flex-direction:column;gap:6px;line-height:1.5">
       <div>🔗 Arraste <b>seu</b> avatar para os projetos em que atuou.</div>
       <div>✅ Pode estar em mais de um projeto.</div>
       <div>🔒 Facilitador clica em Lock Fleet para avançar.</div>
     </div></div>
-  <div class="sb-block"><div class="sb-title">📊 Progresso</div>
+  <div class="sb-block"><div class="sb-title">Progresso</div>
     <p style="font-size:12px;color:var(--text2);margin-bottom:7px"><b>${placed} de ${pl.length}</b> jogadores posicionados.</p>
     <div style="background:var(--bg3);border-radius:3px;height:6px;overflow:hidden"><div style="height:100%;width:${pct}%;background:var(--blue);border-radius:3px;transition:width 400ms ease"></div></div>
     <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text2);margin-top:4px"><span>${pct}%</span><span>${placed}/${pl.length}</span></div>
   </div>
-  ${isFac()?`<div class="sb-block"><div class="sb-title">⚡ Ações</div><button class="btn btn-primary w100" onclick="lockFleet()">🔒 Lock Fleet — Avançar</button></div>`:""}
-  <div class="sb-block"><div class="sb-title">👥 Jogadores (${pl.length})</div>
+  ${isFac()?`<div class="sb-block"><div class="sb-title">Ações</div><button class="btn btn-primary w100" onclick="lockFleet()">Lock Fleet — Avançar</button></div>`:""}
+  <div class="sb-block"><div class="sb-title">Jogadores (${pl.length})</div>
     ${pl.map(p=>`<div style="display:flex;align-items:center;gap:7px;padding:4px 0;font-size:12px">${avHtml(p,24)}<span style="font-weight:500;flex:1">${p.name}${p.id===myId?" <span style='font-size:10px;color:var(--text3)'>(você)</span>":""}</span>${p.online?`<span class="online-dot"></span>`:""}</div>`).join("")}
   </div>`;
 }
@@ -962,13 +962,13 @@ function sbDiag(){
   const pid=gs.currentProject;const fm=gs.fleetMap||{};const pl=players();
   const ops=pid?Object.keys(fm[pid]||{}).map(id=>pl.find(p=>p.id===id)).filter(Boolean):[];
   const diag=Object.keys(gs.diagnosed||{});
-  return `<div class="sb-block"><div class="sb-title">👥 Operadores do Projeto (${ops.length})</div>
+  return `<div class="sb-block"><div class="sb-title">Operadores do Projeto (${ops.length})</div>
     <div class="op-list">${ops.length?ops.map(p=>`<div class="op-av"><div class="op-circle" style="background:${p.color}">${p.initials}</div><div class="op-name">${p.name.split(" ")[0]}</div></div>`).join(""):`<span style="font-size:11px;color:var(--text3)">Sorteie um projeto</span>`}</div>
   </div>
-  <div class="sb-block"><div class="sb-title">📋 Progresso do Trimestre</div>
+  <div class="sb-block"><div class="sb-title">Progresso do Trimestre</div>
     ${PROJS.map(p=>`<div class="prog-item"><div class="prog-dot ${diag.includes(p.id)?"pd-done":"pd-pend"}"></div><div class="prog-name">${p.e} ${p.name}</div><span class="prog-st ${diag.includes(p.id)?"ps-done":"ps-pend"}">${diag.includes(p.id)?"✓":"Pendente"}</span></div>`).join("")}
   </div>
-  <div class="sb-block"><div class="sb-title">👥 Online (${pl.filter(p=>p.online).length})</div>
+  <div class="sb-block"><div class="sb-title">Online (${pl.filter(p=>p.online).length})</div>
     ${pl.map(p=>`<div style="display:flex;align-items:center;gap:7px;padding:3px 0;font-size:12px">${avHtml(p,22)}<span style="font-weight:500;flex:1">${p.name}</span>${p.online?`<span class="online-dot"></span>`:""}</div>`).join("")}
   </div>`;
 }
@@ -977,28 +977,28 @@ function sbMkt(){
   const totals={};probs.forEach(([l])=>{const v=inv[l]||{};totals[l]=Object.values(v).reduce((s,x)=>s+(x.amount||0),0)});
   const sorted=Object.entries(totals).sort((a,b)=>b[1]-a[1]);const max=sorted[0]?.[1]||1;
   const pl=players();
-  return `<div class="sb-block"><div class="sb-title">🏦 Ranking de Investimentos</div>
+  return `<div class="sb-block"><div class="sb-title">Ranking de Investimentos</div>
     ${sorted.map(([l,v],i)=>`<div class="rank-row"><div class="rr-num">${i+1}°</div><div class="rr-name">${l}</div><div class="rr-bar"><div class="rr-fill" style="width:${Math.round(v/max*100)}%"></div></div><div class="rr-val">${v} 💲</div></div>`).join("")||`<span style="font-size:11px;color:var(--text3)">Aguardando...</span>`}
   </div>
-  <div class="sb-block"><div class="sb-title">👥 Online (${pl.filter(p=>p.online).length})</div>
+  <div class="sb-block"><div class="sb-title">Online (${pl.filter(p=>p.online).length})</div>
     ${pl.map(p=>`<div style="display:flex;align-items:center;gap:7px;padding:3px 0;font-size:12px">${avHtml(p,22)}<span style="font-weight:500;flex:1">${p.name}</span>${p.online?`<span class="online-dot"></span>`:""}</div>`).join("")}
   </div>`;
 }
 function sbRef(){
   const totalPts=Object.values(gs.investments||{}).flatMap(v=>Object.values(v)).reduce((s,v)=>s+(v.amount||0),0);
-  return `<div class="sb-block"><div class="sb-title">📊 Resumo do Trimestre</div>
+  return `<div class="sb-block"><div class="sb-title">Resumo do Trimestre</div>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:7px">
       <div style="text-align:center;padding:10px 6px;background:var(--bg2);border-radius:var(--r-sm)"><div style="font-size:15px;font-weight:800">${PROJS.length}</div><div style="font-size:9px;color:var(--text2)">Projetos</div></div>
       <div style="text-align:center;padding:10px 6px;background:var(--bg2);border-radius:var(--r-sm)"><div style="font-size:15px;font-weight:800">${totalPts}</div><div style="font-size:9px;color:var(--text2)">DevPoints</div></div>
       <div style="text-align:center;padding:10px 6px;background:var(--bg2);border-radius:var(--r-sm)"><div style="font-size:15px;font-weight:800">${players().length}</div><div style="font-size:9px;color:var(--text2)">Participantes</div></div>
     </div>
   </div>
-  <div class="sb-block"><div class="sb-title">🏅 Distintivos</div>
-    <div class="dist-item"><div class="dist-medal dm-gold">🐛</div><div><div style="font-size:12px;font-weight:700">The Bug Hunter</div><div style="font-size:10px;color:var(--text2)">Gargalo mais investido pelo time.</div></div></div>
-    <div class="dist-item"><div class="dist-medal dm-green">😇</div><div><div style="font-size:12px;font-weight:700">The Angel Investor</div><div style="font-size:10px;color:var(--text2)">DevPoints distribuídos de forma equilibrada.</div></div></div>
-    <div class="dist-item"><div class="dist-medal dm-blue">👑</div><div><div style="font-size:12px;font-weight:700">The Refactor King</div><div style="font-size:10px;color:var(--text2)">Liderou o plano de ação final.</div></div></div>
+  <div class="sb-block"><div class="sb-title">Distintivos</div>
+    <div class="dist-item"><div class="dist-medal dm-gold">·</div><div><div style="font-size:12px;font-weight:700">The Bug Hunter</div><div style="font-size:10px;color:var(--text2)">Gargalo mais investido pelo time.</div></div></div>
+    <div class="dist-item"><div class="dist-medal dm-green">·</div><div><div style="font-size:12px;font-weight:700">The Angel Investor</div><div style="font-size:10px;color:var(--text2)">DevPoints distribuídos de forma equilibrada.</div></div></div>
+    <div class="dist-item"><div class="dist-medal dm-blue">·</div><div><div style="font-size:12px;font-weight:700">The Refactor King</div><div style="font-size:10px;color:var(--text2)">Liderou o plano de ação final.</div></div></div>
   </div>
-  <div class="sb-block"><div class="sb-title">📤 Exportar</div><button class="btn btn-sec w100" onclick="copyMd()">📋 Copiar Markdown</button></div>`;
+  <div class="sb-block"><div class="sb-title">Exportar</div><button class="btn btn-sec w100" onclick="copyMd()">Copiar Markdown</button></div>`;
 }
 
 /* ── URL PARAM ── */
@@ -1008,7 +1008,7 @@ window.addEventListener("load",()=>{
   document.getElementById("topbar").style.display="flex";
   document.getElementById("statusbar").style.display="flex";
   const p=new URLSearchParams(location.search).get("sala");
-  if(p){setRole("player");document.getElementById("inputCode").value=p.toUpperCase();toast(`🔗 Sala ${p} detectada! Digite seu nome e entre.`);}
+  if(p){setRole("player");document.getElementById("inputCode").value=p.toUpperCase();toast(`Sala ${p} detectada! Digite seu nome e entre.`);}
 });
 </script>
 </body>
