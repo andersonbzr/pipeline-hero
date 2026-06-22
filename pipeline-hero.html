@@ -261,7 +261,7 @@ input[type=range]{width:100%;accent-color:var(--blue);cursor:pointer;height:5px;
   </div>
 </header>
 
-<div class="layout" id="layout" style="display:none">
+<div class="layout" id="layout">
   <div class="main" id="mainArea">
 
     <!-- LOBBY -->
@@ -1004,6 +1004,9 @@ function sbRef(){
 /* ── URL PARAM ── */
 window.addEventListener("load",()=>{
   hideLoader();
+  // show topbar/statusbar placeholders
+  document.getElementById("topbar").style.display="flex";
+  document.getElementById("statusbar").style.display="flex";
   const p=new URLSearchParams(location.search).get("sala");
   if(p){setRole("player");document.getElementById("inputCode").value=p.toUpperCase();toast(`🔗 Sala ${p} detectada! Digite seu nome e entre.`);}
 });
