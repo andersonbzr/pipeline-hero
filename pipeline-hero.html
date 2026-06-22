@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pipeline Hero — The Quarter Release</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#fff;--bg2:#F8F9FA;--bg3:#F1F3F5;--bg4:#E9ECEF;
+  --border:#E5E7EB;--border2:#D1D5DB;
+  --text:#111827;--text2:#6B7280;--text3:#9CA3AF;
+  --blue:#2563EB;--blue2:#1D4ED8;--blue-light:#EFF6FF;--blue-mid:#DBEAFE;
+  --green:#16A34A;--green-bg:#F0FDF4;--green-mid:#DCFCE7;
+  --red:#DC2626;--red-bg:#FEF2F2;--red-mid:#FEE2E2;
+  --orange-bg:#FFFBEB;
+  --r:8px;--r-sm:6px;--r-lg:12px;
+  --sh:0 1px 2px rgba(0,0,0,.06),0 1px 3px rgba(0,0,0,.08);
+  --sh-md:0 4px 8px rgba(0,0,0,.08);
+  --tr:180ms ease;
+  --topbar:56px;--sbw:300px;--status:44px;
+}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg2);color:var(--text);height:100vh;overflow:hidden;-webkit-font-smoothing:antialiased;font-size:14px}
+.topbar{position:fixed;top:0;left:0;right:0;height:var(--topbar);background:var(--bg);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 20px;z-index:200;gap:12px}
+.t-logo{display:flex;align-items:center;gap:9px;min-width:155px;flex-shrink:0}
+.t-logo-box{width:32px;height:32px;background:var(--blue);border-radius:8px;display:flex;align-items:center;justify-content:center}
+.t-logo-box svg{width:16px;height:16px;fill:none;stroke:#fff;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.t-logo-name{font-size:13px;font-weight:700;line-height:1.2}
+.t-logo-sub{font-size:10px;color:var(--text3)}
+.phase-nav{display:flex;align-items:stretch;flex:1;justify-content:center}
+.pn{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 18px;cursor:pointer;position:relative;font-size:12px;color:var(--text3);transition:var(--tr);white-space:nowrap;height:var(--topbar)}
+.pn::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:transparent;border-radius:1px 1px 0 0;transition:var(--tr)}
+.pn.active{color:var(--blue)}.pn.active::after{background:var(--blue)}.pn.done{color:var(--text2)}
+.pn-num{font-size:11px;font-weight:500}.pn-sub{font-size:10px;opacity:.75}
+.t-right{display:flex;align-items:center;gap:14px;flex-shrink:0}
+.t-sala-code{font-weight:700;color:var(--blue);font-size:14px;letter-spacing:.5px}
+.t-copy{cursor:pointer;color:var(--text3);font-size:13px}.t-copy:hover{color:var(--blue)}
+.t-timer-label{font-size:10px;color:var(--text3)}
+.t-timer-row{display:flex;align-items:center;gap:5px}
+.t-timer-val{font-size:22px;font-weight:700;letter-spacing:-.5px}
+.t-timer-btn{width:22px;height:22px;border-radius:50%;border:1px solid var(--border2);background:var(--bg);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:9px;color:var(--text2)}
+.layout{display:flex;padding-top:var(--topbar);padding-bottom:var(--status);height:100vh;overflow:hidden}
+.main{flex:1;overflow-y:auto;padding:24px}
+.sidebar{width:var(--sbw);flex-shrink:0;background:var(--bg);border-left:1px solid var(--border);overflow-y:auto;display:flex;flex-direction:column}
+.statusbar{position:fixed;bottom:0;left:0;right:0;height:var(--status);background:var(--bg);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 20px;z-index:200;font-size:12px;color:var(--text2)}
+.online-dot{width:7px;height:7px;border-radius:50%;background:#22C55E;display:inline-block}
+.kbd{display:inline-flex;align-items:center;padding:2px 6px;background:var(--bg3);border:1px solid var(--border2);border-radius:4px;font-size:11px;font-weight:600;color:var(--text)}
+.sb-exit{color:var(--text2);cursor:pointer;display:flex;align-items:center;gap:4px}.sb-exit:hover{color:var(--red)}
+.screen{display:none}.screen.active{display:block;animation:fi 200ms ease}
+@keyframes fi{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:8px 16px;border-radius:var(--r-sm);font-size:13px;font-weight:600;cursor:pointer;border:none;outline:none;font-family:inherit;transition:var(--tr);white-space:nowrap}
+.btn-primary{background:var(--blue);color:#fff}.btn-primary:hover{background:var(--blue2)}
+.btn-sec{background:var(--bg);color:var(--text);border:1px solid var(--border2)}.btn-sec:hover{background:var(--bg2)}
+.btn-ghost{background:transparent;color:var(--text2);padding:5px 10px;border:none}.btn-ghost:hover{background:var(--bg2);color:var(--text)}
+.btn-green{background:var(--green);color:#fff}.btn-green:hover{background:#15803D}
+.btn-lg{padding:11px 24px;font-size:14px;border-radius:var(--r);width:100%}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.tag{display:inline-flex;align-items:center;padding:2px 7px;border-radius:4px;font-size:11px;font-weight:600}
+.tc{background:var(--blue-mid);color:var(--blue);border:1px solid #BFDBFE}
+.tm{background:var(--green-mid);color:var(--green);border:1px solid #BBF7D0}
+.td{background:var(--red-mid);color:var(--red);border:1px solid #FECACA}
+.sb-block{padding:18px;border-bottom:1px solid var(--border)}.sb-block:last-child{border-bottom:none}
+.sb-title{font-size:12px;font-weight:600;color:var(--text);margin-bottom:12px}
+.info-bar{display:flex;align-items:center;gap:8px;background:var(--blue-light);border:1px solid var(--blue-mid);border-radius:var(--r-sm);padding:8px 12px;font-size:12px;color:var(--blue);font-weight:500;margin-bottom:18px}
+/* LOBBY */
+.lobby-full{display:flex;align-items:center;justify-content:center;min-height:calc(100vh - var(--topbar) - var(--status));padding:40px 20px}
+.lobby-box{width:100%;max-width:440px}
+.lobby-badge{display:inline-flex;align-items:center;gap:6px;background:var(--blue-mid);color:var(--blue);padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;margin-bottom:18px}
+.lobby-title{font-size:32px;font-weight:800;letter-spacing:-1.2px;line-height:1.1;margin-bottom:10px}
+.lobby-title em{color:var(--blue);font-style:normal}
+.lobby-desc{font-size:14px;color:var(--text2);line-height:1.6;margin-bottom:28px}
+.lobby-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--r-lg);padding:24px;box-shadow:var(--sh)}
+.role-switch{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+.role-btn{padding:10px;border:1.5px solid var(--border);border-radius:var(--r-sm);font-size:13px;font-weight:600;cursor:pointer;text-align:center;transition:var(--tr);background:var(--bg);color:var(--text2)}
+.role-btn.active{border-color:var(--blue);background:var(--blue-light);color:var(--blue)}
+.input-group{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
+.input-label{font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.5px}
+.input-field{padding:9px 12px;border:1px solid var(--border);border-radius:var(--r-sm);font-size:14px;font-family:inherit;outline:none;background:var(--bg2);color:var(--text);transition:var(--tr)}
+.input-field:focus{border-color:var(--blue);background:var(--bg);box-shadow:0 0 0 3px rgba(37,99,235,.08)}
+.input-code{text-transform:uppercase;letter-spacing:3px;font-weight:700;font-size:18px;text-align:center}
+/* WAITING */
+.wr-sala-code{font-size:48px;font-weight:800;letter-spacing:6px;color:var(--blue);text-align:center;margin:10px 0}
+.wr-player{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--r-sm);box-shadow:var(--sh);margin-bottom:8px}
+.wr-av{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0}
+.wr-fac-badge{font-size:10px;font-weight:600;background:var(--blue-mid);color:var(--blue);padding:2px 7px;border-radius:4px}
+/* FLEET */
+.pg-title{font-size:20px;font-weight:700;letter-spacing:-.4px;margin-bottom:4px}
+.pg-sub{font-size:13px;color:var(--text2);margin-bottom:20px}
+.fleet-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px}
+.fc{background:var(--bg);border:1px solid var(--border);border-radius:var(--r);padding:14px;min-height:190px;display:flex;flex-direction:column;transition:var(--tr);box-shadow:var(--sh)}
+.fc.dragover{border-color:var(--blue);background:var(--blue-light);box-shadow:0 0 0 3px rgba(37,99,235,.1)}
+.fc-tag{margin-bottom:8px;min-height:20px}
+.fc-name{font-size:12px;font-weight:700;line-height:1.35;margin-bottom:4px}
+.fc-desc{font-size:11px;color:var(--text3);line-height:1.4;flex:1}
+.fc-team{margin-top:12px;padding-top:12px;border-top:1px solid var(--border)}
+.fc-team-lbl{font-size:10px;color:var(--text3);font-weight:500;margin-bottom:7px}
+.fc-avs{display:flex;flex-wrap:wrap;gap:3px;min-height:26px}
+.av-proj{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;border:2px solid #fff;box-shadow:var(--sh);cursor:default}
+.spawn-lbl{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
+.spawn-area{display:flex;flex-wrap:wrap;gap:12px;min-height:60px;align-items:flex-start}
+.av-drag{display:flex;flex-direction:column;align-items:center;gap:4px;user-select:none;transition:transform 150ms ease}
+.av-drag.draggable{cursor:grab}.av-drag.draggable:active{cursor:grabbing;transform:scale(1.07)}
+.av-circle{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;box-shadow:var(--sh-md)}
+.av-name{font-size:10px;color:var(--text3);font-weight:500;max-width:52px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.av-drag.is-me .av-circle{box-shadow:0 0 0 3px var(--blue),var(--sh-md)}
+/* DIAG */
+.proj-sorteado{display:flex;align-items:center;gap:12px;background:var(--bg);border:1px solid var(--border);border-radius:var(--r);padding:12px 16px;margin-bottom:18px;box-shadow:var(--sh)}
+.ps-icon{width:36px;height:36px;background:var(--blue-mid);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.ps-lbl{font-size:10px;color:var(--text3);font-weight:500;text-transform:uppercase;letter-spacing:.4px}
+.ps-name{font-size:15px;font-weight:700;letter-spacing:-.3px}
+.diag-cols{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.dcol{background:var(--bg);border:1px solid var(--border);border-radius:var(--r);padding:16px;box-shadow:var(--sh)}
+.dc-hdr{display:flex;align-items:center;gap:7px;margin-bottom:3px}
+.dc-dot{width:8px;height:8px;border-radius:50%}
+.dc-dot-g{background:var(--green)}.dc-dot-r{background:var(--red)}
+.dc-title{font-size:13px;font-weight:700}
+.dc-sub{font-size:11px;color:var(--text2);margin-bottom:12px}
+.opt-list{display:flex;flex-direction:column;gap:3px}
+.opt{display:flex;align-items:center;gap:9px;padding:6px 9px;border-radius:var(--r-sm);font-size:12px;font-weight:500;cursor:pointer;transition:var(--tr);border:1px solid transparent}
+.opt:hover{background:var(--bg2)}.opt.sg{background:var(--green-bg);border-color:rgba(22,163,74,.2);color:var(--green)}.opt.sr{background:var(--red-bg);border-color:rgba(220,38,38,.2);color:var(--red)}
+.opt-ico{font-size:13px;width:17px;text-align:center;flex-shrink:0}
+.opt-cb{width:15px;height:15px;border-radius:4px;border:1.5px solid var(--border2);flex-shrink:0;margin-left:auto;display:flex;align-items:center;justify-content:center;transition:var(--tr)}
+.opt.sg .opt-cb{background:var(--green);border-color:var(--green)}.opt.sr .opt-cb{background:var(--red);border-color:var(--red)}
+.opt-cb svg{width:9px;height:9px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;display:none}
+.opt.sg .opt-cb svg,.opt.sr .opt-cb svg{display:block}
+.show-more{font-size:12px;color:var(--blue);cursor:pointer;padding:5px 9px;font-weight:500}
+.custom-log{margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}
+.cl-lbl{font-size:11px;color:var(--text2);margin-bottom:6px}
+.cl-row{display:flex;gap:6px}
+.cl-input{flex:1;padding:7px 10px;border:1px solid var(--border);border-radius:var(--r-sm);font-size:12px;font-family:inherit;outline:none;background:var(--bg2);color:var(--text);transition:var(--tr)}
+.cl-input:focus{border-color:var(--blue);background:var(--bg)}
+.send-area{display:flex;flex-direction:column;align-items:center;gap:6px;margin-top:14px}
+.anon-note{font-size:11px;color:var(--text3)}
+.spectator-mode{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;background:var(--bg3);border:1px dashed var(--border2);border-radius:var(--r);text-align:center;color:var(--text2);font-size:13px;gap:8px}
+.deck-wrap{display:flex;justify-content:center;align-items:center;height:150px;position:relative;margin-bottom:24px}
+.dc-card{position:absolute;width:170px;height:115px;background:var(--bg);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh-md);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:12px;text-align:center;transition:transform 500ms cubic-bezier(.34,1.56,.64,1),opacity 300ms ease;cursor:default}
+.dc-card.drawn{transform:translateY(-16px) scale(1.06)!important;border-color:var(--blue);box-shadow:0 8px 24px rgba(37,99,235,.18);z-index:10!important}
+.dc-e{font-size:22px;margin-bottom:5px}.dc-n{font-size:12px;font-weight:700}.dc-s{font-size:10px;color:var(--text2);margin-top:2px}
+.res-section{background:var(--bg);border:1px solid var(--border);border-radius:var(--r);padding:18px;margin-top:16px;box-shadow:var(--sh)}
+.res-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.res-title{font-size:13px;font-weight:600}
+.bar-row{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.bar-lbl{font-size:11px;color:var(--text2);width:175px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500}
+.bar-track{flex:1;height:5px;background:var(--bg3);border-radius:3px;overflow:hidden}
+.bar-fill{height:100%;border-radius:3px;transition:width 600ms cubic-bezier(.4,0,.2,1)}
+.bf-r{background:var(--red)}.bf-g{background:var(--green)}
+.bar-pct{font-size:11px;font-weight:600;width:30px;text-align:right}
+.bp-r{color:var(--red)}.bp-g{color:var(--green)}
+/* MARKET */
+.mfocus{background:var(--bg);border:1px solid var(--border);border-radius:var(--r);padding:18px;margin-bottom:14px;box-shadow:var(--sh)}
+.mf-lbl{font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
+.mf-prob{display:flex;align-items:flex-start;gap:11px;background:var(--red-bg);border:1px solid rgba(220,38,38,.15);border-radius:var(--r-sm);padding:13px;margin-bottom:14px}
+.mf-prob-ico{width:36px;height:36px;background:var(--red-mid);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.mf-prob-name{font-size:14px;font-weight:700;margin-bottom:2px}
+.mf-pct{font-size:18px;font-weight:800;color:var(--red);margin-left:auto;flex-shrink:0}
+.invest-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-sm);padding:16px;margin-bottom:14px}
+.ic-hdr{display:flex;align-items:flex-start;gap:10px;margin-bottom:18px}
+.ic-ico{width:32px;height:32px;background:var(--blue-mid);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.ic-ttl{font-size:13px;font-weight:600;margin-bottom:2px}
+.ic-sub{font-size:11px;color:var(--text2)}
+.ic-pts-n{font-size:20px;font-weight:800;color:var(--blue)}
+.ic-pts-l{font-size:10px;color:var(--text3)}
+.slider-big{font-size:28px;font-weight:800;color:var(--blue);text-align:center;margin-bottom:8px}
+input[type=range]{width:100%;accent-color:var(--blue);cursor:pointer;height:5px;margin-bottom:4px}
+.slider-ends{display:flex;justify-content:space-between;font-size:11px;color:var(--text3);margin-bottom:14px}
+.invest-tip{display:flex;align-items:flex-start;gap:8px;background:var(--blue-light);border:1px solid var(--blue-mid);border-radius:var(--r-sm);padding:9px 11px;margin-bottom:14px}
+.mkt-stats{display:flex;align-items:center;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-sm);overflow:hidden;margin-top:12px}
+.ms-item{padding:12px 16px;text-align:center}
+.ms-n{font-size:16px;font-weight:800;color:var(--blue)}
+.ms-l{font-size:10px;color:var(--text2)}
+.ms-div{width:1px;background:var(--border);align-self:stretch}
+.ms-desc{flex:1;padding:12px 14px;font-size:11px;color:var(--text2);line-height:1.5}
+/* RANK */
+.rank-row{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--bg2)}.rank-row:last-child{border-bottom:none}
+.rr-num{font-size:11px;font-weight:700;color:var(--text3);width:16px}
+.rr-name{flex:1;font-size:12px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rr-bar{width:72px;height:4px;background:var(--bg3);border-radius:2px;overflow:hidden}
+.rr-fill{height:100%;background:var(--blue);border-radius:2px;transition:width 500ms ease}
+.rr-val{font-size:11px;font-weight:700;color:var(--blue)}
+/* REFACTOR */
+.final-rank{background:var(--bg);border:1px solid var(--border);border-radius:var(--r);padding:18px;margin-bottom:18px;box-shadow:var(--sh)}
+.fr-row{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--bg2)}.fr-row:last-child{border-bottom:none}
+.fr-rk{font-size:12px;font-weight:700;color:var(--text3);width:20px}
+.fr-ico{font-size:13px;width:18px}
+.fr-name{flex:1;font-size:13px;font-weight:500}
+.fr-pct{font-size:11px;font-weight:700;color:var(--red);background:var(--red-bg);padding:2px 7px;border-radius:4px;flex-shrink:0}
+.fr-bar{width:200px;height:5px;background:var(--bg3);border-radius:3px;overflow:hidden;flex-shrink:0}
+.fr-bar-fill{height:100%;background:var(--red);border-radius:3px}
+.hf-cards{display:flex;flex-direction:column;gap:12px}
+.hfc{background:var(--bg);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh)}
+.hfc-hdr{display:flex;align-items:flex-start;gap:10px;padding:14px;border-bottom:1px solid var(--border)}
+.hfc-rank-ico{width:34px;height:34px;background:var(--red-bg);border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.hfc-tag{font-size:11px;font-weight:700;color:var(--red);background:var(--red-bg);padding:2px 6px;border-radius:4px;display:inline-block;margin-bottom:2px}
+.hfc-name{font-size:13px;font-weight:600}
+.hfc-pct{font-size:11px;font-weight:700;color:var(--red)}
+.hfc-body{display:grid;grid-template-columns:1fr 170px 170px}
+.hfc-field{padding:12px;border-right:1px solid var(--border)}.hfc-field:last-child{border-right:none}
+.hfc-fl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:5px}
+.hfc-input{width:100%;border:1px solid var(--border);border-radius:var(--r-sm);padding:7px 9px;font-size:12px;font-family:inherit;outline:none;background:var(--bg2);color:var(--text);transition:var(--tr);resize:none}
+.hfc-input:focus{border-color:var(--blue);background:var(--bg)}
+.fin-bar{display:flex;flex-direction:column;align-items:center;gap:7px;background:var(--bg);border:1px solid var(--border);border-radius:var(--r);padding:16px;margin-top:14px;box-shadow:var(--sh)}
+/* SIDEBAR */
+.op-list{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+.op-av{display:flex;flex-direction:column;align-items:center;gap:3px}
+.op-circle{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;box-shadow:var(--sh)}
+.op-name{font-size:10px;color:var(--text2);text-align:center}
+.prog-item{display:flex;align-items:center;font-size:11px;margin-bottom:5px}
+.prog-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-right:6px}
+.pd-done{background:var(--blue)}.pd-pend{background:var(--bg4)}
+.prog-name{flex:1;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.prog-st{font-size:10px;font-weight:600}
+.ps-done{color:var(--green)}.ps-pend{color:var(--text3)}
+.dist-item{display:flex;align-items:flex-start;gap:9px;padding:9px;background:var(--bg2);border-radius:var(--r-sm);margin-bottom:7px}
+.dist-medal{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.dm-gold{background:var(--orange-bg)}.dm-green{background:var(--green-mid)}.dm-blue{background:var(--blue-mid)}
+/* WIN */
+.win-wrap{max-width:680px;margin:0 auto;text-align:center;padding:36px 20px}
+.win-badges{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px}
+.wb{background:var(--bg);border:1px solid var(--border);border-radius:var(--r-lg);padding:18px;text-align:center;box-shadow:var(--sh)}
+.wb-av{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;margin:0 auto 5px}
+.md-pre{background:#1E2332;color:#E2E8F0;border-radius:var(--r);padding:16px;font-family:monospace;font-size:11px;line-height:1.7;text-align:left;margin-bottom:18px;max-height:220px;overflow-y:auto}
+/* TOAST / LOADER */
+.toast{position:fixed;bottom:60px;left:50%;transform:translateX(-50%);background:#1f2937;color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:500;z-index:999;opacity:0;transition:opacity 300ms ease;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1}
+.loader{position:fixed;inset:0;background:rgba(255,255,255,.9);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;gap:12px;font-size:14px;color:var(--text2)}
+.spinner{width:32px;height:32px;border:3px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin 600ms linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.w100{width:100%}.flex{display:flex}.gap2{gap:8px}.aic{align-items:center}.jb{justify-content:space-between}.mb4{margin-bottom:16px}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+</style>
+</head>
+<body>
+
+<div class="loader" id="loader"><div class="spinner"></div><span>Conectando...</span></div>
+<div class="toast" id="toast"></div>
+
+<header class="topbar" id="topbar" style="display:none">
+  <div class="t-logo">
+    <div class="t-logo-box"><svg viewBox="0 0 16 16"><polyline points="1,8 5,4 9,8 13,4"/><polyline points="5,12 9,8 13,12"/></svg></div>
+    <div><div class="t-logo-name">Pipeline Hero</div><div class="t-logo-sub">The Quarter Release</div></div>
+  </div>
+  <nav class="phase-nav" id="pnav">
+    <div class="pn active" data-p="1"><span class="pn-num">1. Fleet Assembly</span><span class="pn-sub">Montagem da Frota</span></div>
+    <div class="pn" data-p="2"><span class="pn-num">2. Diagnóstico</span><span class="pn-sub">por Sorteio</span></div>
+    <div class="pn" data-p="3"><span class="pn-num">3. Bolsa de Valores</span><span class="pn-sub">Investimentos</span></div>
+    <div class="pn" data-p="4"><span class="pn-num">4. Refatoração</span><span class="pn-sub">Plano de Ação</span></div>
+  </nav>
+  <div class="t-right">
+    <div style="font-size:11px;color:var(--text2);display:flex;align-items:center;gap:5px">
+      Sala: <span class="t-sala-code" id="topCode">—</span>
+      <span class="t-copy" onclick="copySala()">⧉</span>
+    </div>
+    <div>
+      <div class="t-timer-label">Tempo da fase</div>
+      <div class="t-timer-row">
+        <div class="t-timer-val" id="timerVal">00:00</div>
+        <div class="t-timer-btn" onclick="toggleTimer()" id="timerBtn">⏸</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="layout" id="layout" style="display:none">
+  <div class="main" id="mainArea">
+
+    <!-- LOBBY -->
+    <div class="screen active" id="sLobby">
+      <div class="lobby-full">
+        <div class="lobby-box">
+          <div class="lobby-badge">⚡ Q2 2025 — Retrospectiva Trimestral</div>
+          <h1 class="lobby-title">Pipeline Hero<br><em>The Quarter Release</em></h1>
+          <p class="lobby-desc">Gamifique sua retro: diagnóstico anônimo, investimento coletivo e plano de ação real — em tempo real com todo o time.</p>
+          <div class="lobby-card">
+            <div class="role-switch">
+              <div class="role-btn active" id="roleF" onclick="setRole('facilitator')">🎙️ Facilitador<br><span style="font-size:10px;font-weight:400">Criar sala</span></div>
+              <div class="role-btn" id="roleP" onclick="setRole('player')">🎮 Jogador<br><span style="font-size:10px;font-weight:400">Entrar na sala</span></div>
+            </div>
+            <div class="input-group">
+              <div class="input-label">Seu nome</div>
+              <input type="text" class="input-field" id="inputName" placeholder="Ex: Ana M." maxlength="20">
+            </div>
+            <div class="input-group" id="codeGroup" style="display:none">
+              <div class="input-label">Código da sala</div>
+              <input type="text" class="input-field input-code" id="inputCode" placeholder="XYZ-123" maxlength="7" oninput="this.value=this.value.toUpperCase()">
+            </div>
+            <button class="btn btn-primary w100" style="padding:11px;font-size:14px;border-radius:var(--r)" id="btnEntrar" onclick="entrar()">Criar Sala →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WAITING ROOM -->
+    <div class="screen" id="sWait">
+      <div style="display:flex;align-items:center;justify-content:center;min-height:calc(100vh - var(--topbar) - var(--status));padding:40px 20px">
+        <div style="width:100%;max-width:520px">
+          <div style="text-align:center;margin-bottom:24px">
+            <div style="font-size:13px;color:var(--text2);margin-bottom:6px">Compartilhe o código com o time</div>
+            <div class="wr-sala-code" id="wrCode">—</div>
+            <button class="btn btn-sec" style="margin-top:8px" onclick="copySala()">📋 Copiar link da sala</button>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:center;gap:6px;font-size:12px;color:var(--green);font-weight:500;margin-bottom:14px">
+            <span class="online-dot"></span><span id="wrCount">0</span> jogadores conectados
+          </div>
+          <div id="wrPlayers"></div>
+          <div id="btnStartWrap" style="display:none;margin-top:16px">
+            <button class="btn btn-green w100" style="padding:12px;font-size:14px;border-radius:var(--r)" onclick="startGame()">🚀 Iniciar Jogo →</button>
+            <p style="text-align:center;font-size:11px;color:var(--text3);margin-top:6px">Apenas o facilitador pode iniciar</p>
+          </div>
+          <div id="waitMsg" style="text-align:center;font-size:12px;color:var(--text2);margin-top:16px">⏳ Aguardando o facilitador iniciar...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FASE 1 FLEET -->
+    <div class="screen" id="s1">
+      <div class="flex aic jb mb4">
+        <div><h1 class="pg-title">1. The Fleet Assembly</h1><p class="pg-sub" style="margin-bottom:0">Arraste seu avatar para os projetos em que você atuou.</p></div>
+      </div>
+      <div class="info-bar">ℹ️ Apenas <b>você</b> pode mover o seu avatar. Pode participar de mais de um projeto.</div>
+      <div class="fleet-grid" id="fleetGrid"></div>
+      <div class="spawn-lbl">Frota Disponível <span style="font-weight:400;color:var(--text3)">(arraste seu avatar)</span></div>
+      <div class="spawn-area" id="spawnArea"></div>
+    </div>
+
+    <!-- FASE 2 DIAG -->
+    <div class="screen" id="s2">
+      <div class="flex aic jb mb4">
+        <div><h1 class="pg-title">2. Diagnóstico por Sorteio</h1><p class="pg-sub" style="margin-bottom:0" id="s2sub">Aguardando o facilitador sortear uma release.</p></div>
+        <div class="flex gap2" id="facDiagBtns" style="display:none">
+          <button class="btn btn-sec" onclick="sortear()">↻ Sortear Release</button>
+          <button class="btn btn-primary" id="btnEnviar" onclick="enviar()" disabled>→ Enviar Diagnóstico</button>
+        </div>
+      </div>
+      <div class="deck-wrap" id="deckWrap"></div>
+      <div id="diagPanel" style="display:none">
+        <div class="proj-sorteado">
+          <div class="ps-icon" id="psIco">🏥</div>
+          <div><div class="ps-lbl">Projeto Sorteado</div><div class="ps-name" id="psName">—</div></div>
+          <span class="tag tc" id="psTag" style="margin-left:auto">CROSS</span>
+        </div>
+        <div id="diagCols"></div>
+        <div id="sendArea" class="send-area" style="display:none">
+          <button class="btn btn-primary" style="padding:10px 32px;font-size:13px;border-radius:var(--r)" onclick="enviar()">→ Enviar Diagnóstico</button>
+          <div class="anon-note">🔒 Suas respostas são anônimas</div>
+        </div>
+        <div id="resSection" style="display:none">
+          <div class="res-section">
+            <div class="res-hdr">
+              <div class="res-title">📊 Resultado — <span id="resProj"></span></div>
+              <div class="flex gap2" id="facNextBtns" style="display:none">
+                <button class="btn btn-sec" id="btnNext" onclick="nextRelease()">Próxima Release →</button>
+                <button class="btn btn-primary" id="btnMkt" onclick="goMarket()" style="display:none">Ir para Bolsa →</button>
+              </div>
+            </div>
+            <div id="painBars"></div><div style="height:10px"></div><div id="prideBars"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FASE 3 MARKET -->
+    <div class="screen" id="s3">
+      <div class="flex aic jb mb4">
+        <div><h1 class="pg-title">3. A Bolsa de Valores</h1><p class="pg-sub" style="margin-bottom:0">Invista seus DevPoints nos gargalos que mais impactam o time.</p></div>
+        <button class="btn btn-sec" id="facMktBtn" style="display:none" onclick="goRefactor()">Finalizar Investimentos →</button>
+      </div>
+      <div id="mktContent"></div>
+    </div>
+
+    <!-- FASE 4 REFACTOR -->
+    <div class="screen" id="s4">
+      <h1 class="pg-title">4. O Refactor Final (Plano de Ação)</h1>
+      <p class="pg-sub">Transforme os maiores gargalos em ações práticas.</p>
+      <div id="refactorContent"></div>
+    </div>
+
+    <!-- FASE 5 WIN -->
+    <div class="screen" id="s5">
+      <div class="win-wrap">
+        <div style="font-size:50px;margin-bottom:10px">🎉</div>
+        <h1 style="font-size:26px;font-weight:800;letter-spacing:-1px;margin-bottom:6px">Quarter Build Successful</h1>
+        <p style="font-size:14px;color:var(--text2);margin-bottom:28px">Produção Estável — <span id="winDate"></span></p>
+        <div class="win-badges" id="winBadges"></div>
+        <div class="md-pre" id="mdPre"></div>
+        <button class="btn btn-primary" style="padding:11px 24px;font-size:14px;border-radius:var(--r);margin:0 auto;display:flex" onclick="copyMd()">📋 Copiar Resumo em Markdown</button>
+      </div>
+    </div>
+
+  </div><!-- /main -->
+  <aside class="sidebar" id="sidebar"></aside>
+</div>
+
+<footer class="statusbar" id="statusbar" style="display:none">
+  <div style="display:flex;align-items:center;gap:16px">
+    <div style="display:flex;align-items:center;gap:5px"><span class="online-dot"></span>Online: <b id="sbOnline">0</b></div>
+    <div>Sala: <b id="sbCode" style="color:var(--blue)">—</b></div>
+    <div style="font-size:11px;color:var(--text3)" id="myBadge"></div>
+  </div>
+  <div id="sbHint" style="font-size:12px;color:var(--text2)"></div>
+  <div class="sb-exit" onclick="exitSala()">⤴ Sair da sala</div>
+</footer>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, set, get, update, onValue, serverTimestamp }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBuN4QRWStNXutJZqAE_Kb_8R5I1reSxaE",
+  authDomain: "pipeline-hero.firebaseapp.com",
+  databaseURL: "https://pipeline-hero-default-rtdb.firebaseio.com",
+  projectId: "pipeline-hero",
+  storageBucket: "pipeline-hero.firebasestorage.app",
+  messagingSenderId: "279839976986",
+  appId: "1:279839976986:web:282d22dca9be5a84242ba3"
+};
+const fbApp = initializeApp(firebaseConfig);
+const db = getDatabase(fbApp);
+
+/* ── DATA ── */
+const PROJS = [
+  {id:"p1",name:"Módulo Regulação de Urgência",desc:"Plataforma principal de regulação e triagem.",e:"🏥",type:"CROSS",tc:"tc"},
+  {id:"p2",name:"Checklists DINAP",desc:"Digitalização e gestão de checklists.",e:"✅",type:"CROSS",tc:"tc"},
+  {id:"p3",name:"Leitor DT50h",desc:"Integração do leitor biométrico DT50h.",e:"📡",type:"",tc:""},
+  {id:"p4",name:"Desfibrilador Externo",desc:"Melhorias na experiência do desfibrilador.",e:"❤️",type:"MELHORIA",tc:"tm"},
+  {id:"p5",name:"Custo Operacional",desc:"Redução de custos e otimizações operacionais.",e:"💰",type:"DÉBITO",tc:"td"},
+];
+const PRIDES=[
+  {i:"🧹",l:"Clean Code"},{i:"🛡️",l:"Zero Regressão (QA)"},{i:"🏗️",l:"Arquitetura Sólida"},
+  {i:"⚡",l:"CI/CD Fluido"},{i:"🤝",l:"Parceria de Negócio (PO)"},{i:"🚀",l:"Performance Top"},
+  {i:"🧪",l:"Cobertura de Testes"},{i:"✨",l:"UX Eficiente"},{i:"🔧",l:"Resolução de Débito Técnico"},
+  {i:"📄",l:"Documentação Clara"},{i:"⏰",l:"Entrega Antecipada"},{i:"🧑‍💻",l:"Autonomia do Time"},
+  {i:"🎨",l:"Design System Utilizado"},{i:"📦",l:"Stack Atualizada"},{i:"👁️",l:"Cultura de Code Review"},
+];
+const PAINS=[
+  {i:"📈",l:"Scope Creep"},{i:"❓",l:"Bad Request (Cards confusos)"},{i:"🔀",l:"Merge Conflict (Dependência Cross)"},
+  {i:"⚠️",l:"Ambiente Instável"},{i:"📚",l:"Debt Overload (Código Legado)"},{i:"🚦",l:"Gargalo no Code Review"},
+  {i:"👥",l:"Falta de Braço / Prazo Agressivo"},{i:"🤔",l:"Incerteza Técnica"},{i:"🖼️",l:"Layout Block (Sem protótipo)"},
+  {i:"🐞",l:"Refugo de QA"},{i:"🕐",l:"Aprovação Tardia"},{i:"🔌",l:"Infra / Pipeline fora"},
+  {i:"🔇",l:"Silêncio na Comunicação"},{i:"🗣️",l:"Alinhamento Longo de Arquitetura"},{i:"🔥",l:"Imprevisto Operacional"},
+];
+const COLORS=["#2563EB","#16A34A","#DC2626","#D97706","#7C3AED","#DB2777","#059669","#0891B2","#9333EA","#EA580C","#0284C7","#65A30D"];
+
+/* ── STATE ── */
+let sala=null, myId=null, myName="", myRole="facilitator", myColor="";
+let gs={};  // gameState mirror from Firebase
+let selP=[], selN=[], moreP=false, moreN=false;
+let timerOn=true, timerS=0, timerIv=null;
+let sliderVal=50, hotfixData=[];
+
+/* ── UTILS ── */
+function genCode(){const c="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";let s="";for(let i=0;i<3;i++)s+=c[Math.floor(Math.random()*c.length)];s+="-";for(let i=0;i<3;i++)s+=c[Math.floor(Math.random()*c.length)];return s}
+function genId(){return Math.random().toString(36).substr(2,9)}
+function toast(m,d=2500){const t=document.getElementById("toast");t.textContent=m;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),d)}
+function players(){return Object.values(gs.players||{})}
+function isFac(){return myRole==="facilitator"}
+function rand(a){return a[Math.floor(Math.random()*a.length)]}
+function hideLoader(){document.getElementById("loader").style.display="none"}
+function showApp(){
+  document.getElementById("topbar").style.display="flex";
+  document.getElementById("layout").style.display="flex";
+  document.getElementById("statusbar").style.display="flex";
+}
+function showScreen(id){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  document.getElementById("mainArea").scrollTop=0;
+}
+
+/* ── TIMER ── */
+function startTimer(){
+  clearInterval(timerIv);timerS=0;
+  timerIv=setInterval(()=>{
+    if(!timerOn)return;timerS++;
+    const m=Math.floor(timerS/60),s=timerS%60;
+    document.getElementById("timerVal").textContent=String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
+  },1000);
+}
+window.toggleTimer=()=>{timerOn=!timerOn;document.getElementById("timerBtn").textContent=timerOn?"⏸":"▶"};
+
+/* ── ROLE TOGGLE ── */
+window.setRole=function(r){
+  myRole=r;
+  document.getElementById("roleF").classList.toggle("active",r==="facilitator");
+  document.getElementById("roleP").classList.toggle("active",r==="player");
+  document.getElementById("codeGroup").style.display=r==="player"?"flex":"none";
+  document.getElementById("btnEntrar").textContent=r==="facilitator"?"Criar Sala →":"Entrar na Sala →";
+};
+
+/* ── ENTER ── */
+window.entrar=async function(){
+  const name=document.getElementById("inputName").value.trim();
+  if(!name){toast("⚠️ Digite seu nome");return}
+  myName=name; myId=genId();
+  myColor=COLORS[Math.floor(Math.random()*COLORS.length)];
+  const ini=name.split(" ").map(w=>w[0]).join("").toUpperCase().substr(0,2);
+
+  if(myRole==="facilitator"){
+    sala=genCode();
+    await set(ref(db,`salas/${sala}`),{
+      code:sala, phase:"waiting", facilitatorId:myId,
+      diagnosed:{}, investments:{}, hotfixes:{}, fleetMap:{},
+      createdAt:serverTimestamp()
+    });
+  } else {
+    const code=document.getElementById("inputCode").value.trim().toUpperCase();
+    if(code.length<7){toast("⚠️ Digite o código completo (ex: XYZ-123)");return}
+    sala=code;
+    const snap=await get(ref(db,`salas/${sala}`));
+    if(!snap.exists()){toast("❌ Sala não encontrada");return}
+    if(snap.val().phase!=="waiting"){toast("❌ Jogo já começou");return}
+  }
+
+  await set(ref(db,`salas/${sala}/players/${myId}`),{
+    id:myId, name:myName, color:myColor, initials:ini,
+    role:myRole, online:true
+  });
+
+  window.addEventListener("beforeunload",()=>set(ref(db,`salas/${sala}/players/${myId}/online`),false));
+  subscribe();
+};
+
+/* ── SUBSCRIBE ── */
+function subscribe(){
+  onValue(ref(db,`salas/${sala}`),snap=>{
+    if(!snap.exists())return;
+    gs=snap.val();
+    render();
+  });
+}
+
+/* ── RENDER ROUTER ── */
+function render(){
+  updateTopbar();
+  updateSB();
+  renderSidebar();
+  const p=gs.phase||"waiting";
+  if(p==="waiting"){showScreen("sWait");renderWait()}
+  else if(p==="fleet"){showScreen("s1");renderFleet()}
+  else if(p==="diag"){showScreen("s2");renderDiag()}
+  else if(p==="market"){showScreen("s3");renderMarket()}
+  else if(p==="refactor"){showScreen("s4");renderRefactor()}
+  else if(p==="done"){showScreen("s5");renderWin()}
+}
+
+function updateTopbar(){
+  hideLoader(); showApp();
+  document.getElementById("topCode").textContent=sala||"—";
+  document.getElementById("sbCode").textContent=sala||"—";
+  document.getElementById("sbOnline").textContent=players().filter(p=>p.online).length;
+  document.getElementById("myBadge").textContent=isFac()?"🎙️ Facilitador":"🎮 Jogador";
+  const pm={waiting:0,fleet:1,diag:2,market:3,refactor:4,done:5};
+  const cur=pm[gs.phase]||0;
+  document.querySelectorAll(".pn").forEach(el=>{
+    const n=parseInt(el.dataset.p);
+    el.classList.remove("active","done");
+    if(n===cur)el.classList.add("active");
+    else if(n<cur)el.classList.add("done");
+  });
+}
+function updateSB(){
+  const h={fleet:"Arraste seu avatar",diag:"Selecione até 2 opções por coluna",market:"Use o slider para investir DevPoints",refactor:"Preencha todos os Hotfixes"};
+  document.getElementById("sbHint").textContent=h[gs.phase]||"";
+}
+window.copySala=()=>navigator.clipboard.writeText(location.href.split("?")[0]+"?sala="+sala).then(()=>toast("✅ Link copiado!"));
+window.exitSala=()=>{if(confirm("Sair da sala?")){set(ref(db,`salas/${sala}/players/${myId}/online`),false);location.reload()}};
+
+/* ═══════════════ WAITING ═══════════════ */
+function renderWait(){
+  document.getElementById("wrCode").textContent=sala;
+  const pl=players();
+  document.getElementById("wrCount").textContent=pl.filter(p=>p.online).length;
+  document.getElementById("wrPlayers").innerHTML=pl.map(p=>`
+    <div class="wr-player">
+      <div class="wr-av" style="background:${p.color}">${p.initials}</div>
+      <div style="flex:1;font-size:13px;font-weight:600">${p.name}${p.id===myId?" <span style=\'font-size:10px;color:var(--text3)\'>(você)</span>":""}</div>
+      ${p.role==="facilitator"?"<span class=\'wr-fac-badge\'>Facilitador</span>":""}
+      ${p.online?"<span style=\'display:flex;align-items:center;gap:4px;font-size:11px;color:var(--green);font-weight:500\'><span class=\'online-dot\'></span>online</span>":""}
+    </div>`).join("");
+  document.getElementById("btnStartWrap").style.display=isFac()?"block":"none";
+  document.getElementById("waitMsg").style.display=isFac()?"none":"block";
+}
+window.startGame=async()=>{startTimer();await update(ref(db,`salas/${sala}`),{phase:"fleet"})};
+
+/* ═══════════════ FLEET ═══════════════ */
+function renderFleet(){
+  startTimer();
+  const fm=gs.fleetMap||{};
+  const pl=players();
+  document.getElementById("fleetGrid").innerHTML=PROJS.map(p=>`
+    <div class="fc" id="fc${p.id}"
+      ondragover="dOv(event,'${p.id}')"
+      ondrop="dDr(event,'${p.id}')"
+      ondragleave="document.getElementById('fc${p.id}').classList.remove('dragover')">
+      ${p.type?`<div class="fc-tag"><span class="tag ${p.tc}">${p.type}</span></div>`:"<div class='fc-tag'></div>"}
+      <div class="fc-name">${p.name}</div>
+      <div class="fc-desc">${p.desc}</div>
+      <div class="fc-team">
+        <div class="fc-team-lbl" id="fct${p.id}">Equipe neste projeto (0)</div>
+        <div class="fc-avs" id="favs${p.id}"></div>
+      </div>
+    </div>`).join("");
+
+  PROJS.forEach(p=>{
+    const ids=Object.keys(fm[p.id]||{});
+    const ps=ids.map(id=>pl.find(x=>x.id===id)).filter(Boolean);
+    const c=document.getElementById("favs"+p.id);
+    const l=document.getElementById("fct"+p.id);
+    if(c) c.innerHTML=ps.map(x=>`<div class="av-proj" style="background:${x.color}" title="${x.name}">${x.initials}</div>`).join("");
+    if(l) l.textContent=`Equipe neste projeto (${ps.length})`;
+  });
+
+  document.getElementById("spawnArea").innerHTML=pl.map(p=>`
+    <div class="av-drag ${p.id===myId?"is-me draggable":""}" id="avd${p.id}"
+      ${p.id===myId?`draggable="true" ondragstart="window._drag=true;event.dataTransfer.effectAllowed='copy'"`:""}
+      title="${p.name}">
+      <div class="av-circle" style="background:${p.color}">${p.initials}</div>
+      <div class="av-name">${p.name.split(" ")[0]}${p.id===myId?" (eu)":""}</div>
+    </div>`).join("");
+}
+window.dOv=(e,pid)=>{e.preventDefault();document.getElementById("fc"+pid).classList.add("dragover")};
+window.dDr=async(e,pid)=>{
+  e.preventDefault();document.getElementById("fc"+pid).classList.remove("dragover");
+  if(!window._drag)return;window._drag=false;
+  const cur=(gs.fleetMap||{})[pid]||{};
+  if(cur[myId]){toast("Você já está neste projeto!");return}
+  await set(ref(db,`salas/${sala}/fleetMap/${pid}/${myId}`),true);
+  toast("✅ Avatar adicionado ao projeto!");
+};
+window.lockFleet=async()=>{
+  if(!isFac())return;
+  await update(ref(db,`salas/${sala}`),{phase:"diag",currentProject:null,showResults:null});
+  startTimer();
+};
+
+/* ═══════════════ DIAG ═══════════════ */
+function renderDiag(){
+  startTimer();
+  const diagnosed=Object.keys(gs.diagnosed||{});
+  const curPid=gs.currentProject;
+
+  // deck
+  const rem=PROJS.filter(p=>!diagnosed.includes(p.id));
+  document.getElementById("deckWrap").innerHTML=rem.map((p,i)=>{
+    const off=(i-Math.floor(rem.length/2))*30;
+    const rot=(i-Math.floor(rem.length/2))*3;
+    const drawn=p.id===curPid;
+    return `<div class="dc-card${drawn?" drawn":""}" style="transform:translateX(${off}px) rotate(${rot}deg);z-index:${i};${curPid&&!drawn?"opacity:.28":""}">
+      <div class="dc-e">${p.e}</div><div class="dc-n">${p.name}</div><div class="dc-s">${p.type||"Projeto"}</div>
+    </div>`;
+  }).join("");
+
+  if(isFac()) document.getElementById("facDiagBtns").style.display="flex";
+
+  if(!curPid){
+    document.getElementById("diagPanel").style.display="none";
+    document.getElementById("s2sub").textContent=isFac()?"Clique em Sortear para iniciar.":"Aguardando o facilitador sortear uma release.";
+    document.getElementById("btnEnviar").disabled=true;
+    return;
+  }
+  const proj=PROJS.find(p=>p.id===curPid);if(!proj)return;
+  document.getElementById("s2sub").textContent=`Diagnóstico: ${proj.name}`;
+  document.getElementById("psIco").textContent=proj.e;
+  document.getElementById("psName").textContent=proj.name;
+  const tg=document.getElementById("psTag");
+  if(proj.type){tg.textContent=proj.type;tg.className="tag "+proj.tc;tg.style.display=""}
+  else tg.style.display="none";
+  document.getElementById("diagPanel").style.display="block";
+
+  // already showing results?
+  if(gs.showResults===curPid){
+    renderResults(curPid);
+    document.getElementById("diagCols").innerHTML="";
+    document.getElementById("sendArea").style.display="none";
+    document.getElementById("resSection").style.display="block";
+    if(isFac()){
+      document.getElementById("facNextBtns").style.display="flex";
+      const remAfter=PROJS.filter(p=>![...diagnosed,curPid].includes(p.id));
+      document.getElementById("btnNext").style.display=remAfter.length?"inline-flex":"none";
+      document.getElementById("btnMkt").style.display=remAfter.length===0?"inline-flex":"none";
+    }
+    return;
+  }
+  document.getElementById("resSection").style.display="none";
+
+  // spectator / already sent?
+  const isOp=(gs.fleetMap||{})[curPid]?.[myId]||isFac();
+  const sent=((gs.submissions||{})[curPid]||{})[myId];
+  if(!isOp){
+    document.getElementById("diagCols").innerHTML=`<div class="spectator-mode"><div style="font-size:24px">👀</div><div style="font-weight:600">Modo Espectador</div><div>Você não atuou neste projeto.</div></div>`;
+    document.getElementById("sendArea").style.display="none";
+    document.getElementById("btnEnviar").disabled=true;
+    return;
+  }
+  if(sent){
+    document.getElementById("diagCols").innerHTML=`<div class="spectator-mode" style="background:var(--green-bg);border-color:var(--green-mid)"><div style="font-size:24px">✅</div><div style="font-weight:600;color:var(--green)">Diagnóstico enviado!</div><div style="color:var(--text2)">Aguardando os demais operadores...</div></div>`;
+    document.getElementById("sendArea").style.display="none";
+    document.getElementById("btnEnviar").disabled=true;
+    return;
+  }
+  renderOpts();
+  document.getElementById("sendArea").style.display="flex";
+  document.getElementById("btnEnviar").disabled=false;
+}
+
+function renderOpts(){
+  const vP=moreP?PRIDES:PRIDES.slice(0,10);
+  const vN=moreN?PAINS:PAINS.slice(0,10);
+  document.getElementById("diagCols").innerHTML=`
+    <div class="diag-cols">
+      <div class="dcol">
+        <div class="dc-hdr"><div class="dc-dot dc-dot-g"></div><div class="dc-title">Orgulhos Técnicos</div></div>
+        <div class="dc-sub">Selecione até 2 opções</div>
+        <div class="opt-list">${vP.map((o,i)=>`<div class="opt${selP.includes(i)?" sg":""}" onclick="tgP(${i})"><span class="opt-ico">${o.i}</span><span>${i+1}. ${o.l}</span><div class="opt-cb"><svg viewBox="0 0 9 7"><polyline points="1,3.5 3.5,6 8,1"/></svg></div></div>`).join("")}</div>
+        <div class="show-more" onclick="tgMoreP()">${moreP?"Ver menos ▴":`Ver mais opções (${PRIDES.length-10}) ▾`}</div>
+      </div>
+      <div class="dcol">
+        <div class="dc-hdr"><div class="dc-dot dc-dot-r"></div><div class="dc-title">Gargalos / Dores</div></div>
+        <div class="dc-sub">Selecione até 2 opções</div>
+        <div class="opt-list">${vN.map((o,i)=>`<div class="opt${selN.includes(i)?" sr":""}" onclick="tgN(${i})"><span class="opt-ico">${o.i}</span><span>${i+1}. ${o.l}</span><div class="opt-cb"><svg viewBox="0 0 9 7"><polyline points="1,3.5 3.5,6 8,1"/></svg></div></div>`).join("")}</div>
+        <div class="show-more" onclick="tgMoreN()">${moreN?"Ver menos ▴":`Ver mais opções (${PAINS.length-10}) ▾`}</div>
+        <div class="custom-log"><div class="cl-lbl">Log customizado <span style="color:var(--text3)">(opcional e anônimo)</span></div><div class="cl-row"><input type="text" class="cl-input" id="customLog" placeholder="Comentário livre..." maxlength="120"></div></div>
+      </div>
+    </div>`;
+}
+window.tgP=i=>{if(selP.includes(i))selP=selP.filter(x=>x!==i);else{if(selP.length>=2)return;selP.push(i)}renderOpts()};
+window.tgN=i=>{if(selN.includes(i))selN=selN.filter(x=>x!==i);else{if(selN.length>=2)return;selN.push(i)}renderOpts()};
+window.tgMoreP=()=>{moreP=!moreP;renderOpts()};
+window.tgMoreN=()=>{moreN=!moreN;renderOpts()};
+
+window.sortear=async()=>{
+  if(!isFac())return;
+  const diagnosed=Object.keys(gs.diagnosed||{});
+  const rem=PROJS.filter(p=>!diagnosed.includes(p.id));
+  if(!rem.length)return;
+  selP=[];selN=[];
+  await update(ref(db,`salas/${sala}`),{currentProject:rand(rem).id,showResults:null});
+};
+
+window.enviar=async()=>{
+  const pid=gs.currentProject;if(!pid)return;
+  const prides=selP.map(i=>PRIDES[i].l);
+  const pains=selN.map(i=>PAINS[i].l);
+  const custom=document.getElementById("customLog")?.value?.trim()||null;
+  await set(ref(db,`salas/${sala}/submissions/${pid}/${myId}`),{prides,pains,custom,ts:serverTimestamp()});
+  toast("✅ Diagnóstico enviado!");
+  // auto-show results if all operators submitted (facilitator checks)
+  if(isFac()){
+    const snap=await get(ref(db,`salas/${sala}/submissions/${pid}`));
+    const subs=Object.values(snap.val()||{});
+    const pf={},pn={};
+    subs.forEach(s=>{(s.prides||[]).forEach(l=>pf[l]=(pf[l]||0)+1);(s.pains||[]).forEach(l=>pn[l]=(pn[l]||0)+1)});
+    await update(ref(db,`salas/${sala}`),{
+      [`diagResults/${pid}`]:{prides:pf,pains:pn},
+      showResults:pid,
+      [`diagnosed/${pid}`]:true
+    });
+  }
+};
+
+function renderResults(pid){
+  const r=(gs.diagResults||{})[pid]||{};
+  const pa=Object.entries(r.pains||{}).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  const pr=Object.entries(r.prides||{}).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  const proj=PROJS.find(p=>p.id===pid);
+  document.getElementById("resProj").textContent=`${proj?.e||""} ${proj?.name||""}`;
+  const totPa=pa.reduce((s,[,c])=>s+c,0)||1;
+  const totPr=pr.reduce((s,[,c])=>s+c,0)||1;
+  document.getElementById("painBars").innerHTML=
+    `<div style="display:flex;align-items:center;gap:6px;margin-bottom:9px"><div class="dc-dot dc-dot-r"></div><b style="font-size:12px">Gargalos</b></div>`+
+    pa.map(([l,c])=>{const p=Math.round(c/totPa*100);return`<div class="bar-row"><div class="bar-lbl">${l}</div><div class="bar-track"><div class="bar-fill bf-r" style="width:${p}%"></div></div><div class="bar-pct bp-r">${p}%</div></div>`}).join("");
+  document.getElementById("prideBars").innerHTML=
+    `<div style="display:flex;align-items:center;gap:6px;margin-bottom:9px"><div class="dc-dot dc-dot-g"></div><b style="font-size:12px">Orgulhos</b></div>`+
+    pr.map(([l,c])=>{const p=Math.round(c/totPr*100);return`<div class="bar-row"><div class="bar-lbl">${l}</div><div class="bar-track"><div class="bar-fill bf-g" style="width:${p}%"></div></div><div class="bar-pct bp-g">${p}%</div></div>`}).join("");
+}
+window.nextRelease=async()=>update(ref(db,`salas/${sala}`),{currentProject:null,showResults:null});
+window.goMarket=async()=>{await update(ref(db,`salas/${sala}`),{phase:"market"});startTimer()};
+
+/* ═══════════════ MARKET ═══════════════ */
+function getProblems(){
+  const pm={};
+  Object.values(gs.diagResults||{}).forEach(r=>Object.entries(r.pains||{}).forEach(([l,c])=>{pm[l]=(pm[l]||0)+c}));
+  return Object.entries(pm).sort((a,b)=>b[1]-a[1]).slice(0,5);
+}
+function renderMarket(){
+  startTimer();
+  if(isFac())document.getElementById("facMktBtn").style.display="inline-flex";
+  const probs=getProblems();
+  const tot=probs.reduce((s,[,v])=>s+v,0)||1;
+  const top=probs[0];
+  const topPct=top?Math.round(top[1]/tot*100):0;
+  const inv=gs.investments||{};
+  const totalInv=Object.values(inv).flatMap(v=>Object.values(v)).reduce((s,v)=>s+(v.amount||0),0);
+  document.getElementById("mktContent").innerHTML=`
+    <div class="mfocus">
+      <div class="mf-lbl">Gargalo em Foco</div>
+      <div class="mf-prob">
+        <div class="mf-prob-ico">⚠️</div>
+        <div style="flex:1"><div class="mf-prob-name">#1 ${top?top[0]:"—"}</div><div style="font-size:12px;color:var(--text2)">Gargalo mais votado no trimestre.</div></div>
+        <div><div class="mf-pct">${topPct}%</div><div style="font-size:10px;color:var(--text3);text-align:right">dos votos</div></div>
+      </div>
+      <div class="invest-card">
+        <div class="ic-hdr">
+          <div class="ic-ico">💰</div>
+          <div><div class="ic-ttl">Quanto você investiria para resolver este gargalo?</div><div class="ic-sub">Use o controle abaixo.</div></div>
+          <div style="text-align:right"><div class="ic-pts-n">💲 100</div><div class="ic-pts-l">DevPoints disponíveis</div></div>
+        </div>
+        <div class="slider-big" id="slDisp">50 <span style="font-size:16px;font-weight:500;color:var(--text2)">💲 DevPoints</span></div>
+        <input type="range" min="0" max="100" value="50" oninput="sliderVal=parseInt(this.value);document.getElementById('slDisp').innerHTML=this.value+' <span style=\'font-size:16px;font-weight:500;color:var(--text2)\'>💲 DevPoints</span>'">
+        <div class="slider-ends"><span>0</span><span>100</span></div>
+        <div class="invest-tip"><div>⭐</div><div><div style="font-size:12px;font-weight:600;color:var(--blue)">Seu investimento faz a diferença!</div><div style="font-size:11px;color:var(--blue);opacity:.8">Seus DevPoints serão somados aos do time.</div></div></div>
+        <button class="btn btn-primary w100" style="padding:11px;border-radius:var(--r)" id="invBtn" onclick="confirmInvest()">Confirmar Investimento</button>
+        <div style="font-size:11px;color:var(--text3);text-align:center;margin-top:6px">Você pode alterar até o fim da fase.</div>
+      </div>
+      <div class="mkt-stats">
+        <div class="ms-desc">👥 Todos participam, todos constroem. Seu DevPoint ajuda a priorizar o próximo quarter.</div>
+        <div class="ms-div"></div>
+        <div class="ms-item"><div class="ms-n">${players().filter(p=>p.online).length}</div><div class="ms-l">Online agora</div></div>
+        <div class="ms-div"></div>
+        <div class="ms-item"><div class="ms-n" id="totalInv">${totalInv}</div><div class="ms-l">DevPoints investidos</div></div>
+      </div>
+    </div>`;
+}
+window.confirmInvest=async()=>{
+  const prob=getProblems()[0]?.[0];if(!prob)return;
+  await set(ref(db,`salas/${sala}/investments/${prob}/${myId}`),{amount:sliderVal,ts:serverTimestamp()});
+  const btn=document.getElementById("invBtn");
+  btn.textContent="✓ Confirmado!";btn.style.background="var(--green)";
+  toast(`✅ Investidos ${sliderVal} DevPoints!`);
+};
+window.goRefactor=async()=>{await update(ref(db,`salas/${sala}`),{phase:"refactor"});startTimer()};
+
+/* ═══════════════ REFACTOR ═══════════════ */
+function renderRefactor(){
+  startTimer();
+  const probs=getProblems();
+  const tot=probs.reduce((s,[,v])=>s+v,0)||1;
+  const top3=probs.slice(0,3);
+  const icons=["❓","🔀","🚦","🕐","⚠️"];
+  const pcts=probs.map(([,v])=>Math.round(v/tot*100));
+  const saved=gs.hotfixes||{};
+  hotfixData=top3.map(([l],i)=>saved[i]||{problem:l,what:"",who:"",when:""});
+
+  const rkH=probs.map(([l,v],i)=>`<div class="fr-row"><div class="fr-rk">${i+1}°</div><div class="fr-ico">${icons[i]||"•"}</div><div class="fr-name">${l}</div><div class="fr-pct">${pcts[i]}%</div><div class="fr-bar"><div class="fr-bar-fill" style="width:${pcts[i]}%"></div></div></div>`).join("");
+  const hfH=top3.map(([l],i)=>{
+    const h=hotfixData[i];const ro=!isFac();
+    return `<div class="hfc">
+      <div class="hfc-hdr"><div class="hfc-rank-ico">${icons[i]||"⚠️"}</div><div style="flex:1"><div class="hfc-tag">#${i+1}</div><div class="hfc-name">${l}</div><div class="hfc-pct">${pcts[i]}%</div></div></div>
+      <div class="hfc-body">
+        <div class="hfc-field"><div class="hfc-fl">O que faremos</div><textarea class="hfc-input" rows="4" placeholder="Descreva a ação..." ${ro?"readonly":""} oninput="updateHF(${i},'what',this.value)">${h.what||""}</textarea></div>
+        <div class="hfc-field"><div class="hfc-fl">Dono</div><input type="text" class="hfc-input" placeholder="Responsável" ${ro?"readonly":""} value="${h.who||""}" oninput="updateHF(${i},'who',this.value)"></div>
+        <div class="hfc-field"><div class="hfc-fl">Prazo</div><input type="text" class="hfc-input" placeholder="Ex: Sprint 23" ${ro?"readonly":""} value="${h.when||""}" oninput="updateHF(${i},'when',this.value)"></div>
+      </div>
+    </div>`;
+  }).join("");
+
+  document.getElementById("refactorContent").innerHTML=`
+    <div class="final-rank"><div style="display:flex;align-items:center;gap:8px;margin-bottom:14px"><b style="font-size:13px">📊 Ranking Final de Gargalos</b><span style="font-size:11px;color:var(--text2)">(Consolidado do Trimestre)</span></div>${rkH}</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+      <b style="font-size:13px">Plano de Ação (Hotfixes)</b>
+      ${!isFac()?`<span style="font-size:11px;color:var(--text2)">🔒 Apenas o Facilitador edita</span>`:""}
+    </div>
+    <div class="hf-cards">${hfH}</div>
+    ${isFac()?`<div class="fin-bar">
+      <button class="btn btn-green" style="padding:11px 32px;font-size:14px;border-radius:var(--r)" onclick="finalizar()">✅ Finalizar Plano de Ação</button>
+      <div style="font-size:11px;color:var(--text3);display:flex;align-items:center;gap:4px">🔒 Todos os campos do Top 3 devem estar preenchidos.</div>
+    </div>`:`<div style="text-align:center;padding:16px;font-size:12px;color:var(--text2)">⏳ Aguardando o Facilitador finalizar...</div>`}`;
+}
+window.updateHF=async(i,field,value)=>{
+  hotfixData[i][field]=value;
+  if(isFac()) await set(ref(db,`salas/${sala}/hotfixes/${i}`),hotfixData[i]);
+};
+window.finalizar=async()=>{
+  const all=hotfixData.slice(0,3).every(h=>h.what&&h.who&&h.when);
+  if(!all){toast("⚠️ Preencha todos os campos antes de finalizar.");return}
+  await update(ref(db,`salas/${sala}`),{phase:"done"});
+};
+
+/* ═══════════════ WIN ═══════════════ */
+function renderWin(){
+  document.getElementById("winDate").textContent=new Date().toLocaleDateString("pt-BR",{day:"2-digit",month:"long",year:"numeric"});
+  const pl=players();
+  const p1=pl[Math.floor(Math.random()*pl.length)]||{color:"#666",initials:"?",name:"—"};
+  const p2=pl.filter(p=>p!==p1)[0]||p1;
+  const p3=pl.filter(p=>p!==p1&&p!==p2)[0]||p1;
+  document.getElementById("winBadges").innerHTML=[
+    {m:"🐛",t:"The Bug Hunter",p:p1},{m:"😇",t:"The Angel Investor",p:p2},{m:"👑",t:"The Refactor King",p:p3}
+  ].map(b=>`<div class="wb"><div style="font-size:28px;margin-bottom:7px">${b.m}</div><div style="font-size:12px;font-weight:700;margin-bottom:8px">${b.t}</div><div class="wb-av" style="background:${b.p.color}">${b.p.initials}</div><div style="font-size:13px;font-weight:600;color:var(--blue)">${b.p.name}</div></div>`).join("");
+  document.getElementById("mdPre").textContent=genMd();
+}
+function genMd(){
+  let md=`# 🎮 Pipeline Hero — Quarter Release Report
+**Data:** ${new Date().toLocaleDateString("pt-BR")} | Q2 2025
+
+---
+
+## 📊 Diagnóstico
+
+`;
+  PROJS.forEach(p=>{
+    const r=(gs.diagResults||{})[p.id];if(!r)return;
+    const pa=Object.entries(r.pains||{}).sort((a,b)=>b[1]-a[1]).slice(0,5);
+    const pr=Object.entries(r.prides||{}).sort((a,b)=>b[1]-a[1]).slice(0,5);
+    md+=`### ${p.e} ${p.name}
+- **Gargalos:** ${pa.map(([l])=>l).join(", ")}
+- **Orgulhos:** ${pr.map(([l])=>l).join(", ")}
+
+`;
+  });
+  md+=`---
+
+## 🔧 Plano de Ação
+
+`;
+  Object.values(gs.hotfixes||{}).forEach((h,i)=>{md+=`### #${i+1} — ${h.problem}
+- **O que:** ${h.what||"—"}
+- **Dono:** ${h.who||"—"}
+- **Prazo:** ${h.when||"—"}
+
+`});
+  md+=`---
+*Gerado por Pipeline Hero — pipelinehero.app*
+`;
+  return md;
+}
+window.copyMd=()=>navigator.clipboard.writeText(genMd()).then(()=>toast("✅ Markdown copiado!"));
+
+/* ═══════════════ SIDEBAR ═══════════════ */
+function renderSidebar(){
+  const sb=document.getElementById("sidebar");
+  const p=gs.phase;
+  if(!p||p==="waiting"){sb.innerHTML="";return}
+  if(p==="fleet")sb.innerHTML=sbFleet();
+  else if(p==="diag")sb.innerHTML=sbDiag();
+  else if(p==="market")sb.innerHTML=sbMkt();
+  else if(p==="refactor")sb.innerHTML=sbRef();
+  else sb.innerHTML="";
+}
+function avHtml(p,size=22){return`<div style="width:${size}px;height:${size}px;border-radius:50%;background:${p.color};display:flex;align-items:center;justify-content:center;font-size:${Math.floor(size*.4)}px;font-weight:700;color:#fff;flex-shrink:0">${p.initials}</div>`}
+function sbFleet(){
+  const pl=players();const fm=gs.fleetMap||{};
+  const placed=pl.filter(p=>Object.values(fm).some(ids=>ids&&ids[p.id])).length;
+  const pct=Math.round(placed/pl.length*100)||0;
+  return `<div class="sb-block"><div class="sb-title">ℹ️ Sobre esta fase</div>
+    <div style="font-size:12px;color:var(--text2);display:flex;flex-direction:column;gap:6px;line-height:1.5">
+      <div>🔗 Arraste <b>seu</b> avatar para os projetos em que atuou.</div>
+      <div>✅ Pode estar em mais de um projeto.</div>
+      <div>🔒 Facilitador clica em Lock Fleet para avançar.</div>
+    </div></div>
+  <div class="sb-block"><div class="sb-title">📊 Progresso</div>
+    <p style="font-size:12px;color:var(--text2);margin-bottom:7px"><b>${placed} de ${pl.length}</b> jogadores posicionados.</p>
+    <div style="background:var(--bg3);border-radius:3px;height:6px;overflow:hidden"><div style="height:100%;width:${pct}%;background:var(--blue);border-radius:3px;transition:width 400ms ease"></div></div>
+    <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text2);margin-top:4px"><span>${pct}%</span><span>${placed}/${pl.length}</span></div>
+  </div>
+  ${isFac()?`<div class="sb-block"><div class="sb-title">⚡ Ações</div><button class="btn btn-primary w100" onclick="lockFleet()">🔒 Lock Fleet — Avançar</button></div>`:""}
+  <div class="sb-block"><div class="sb-title">👥 Jogadores (${pl.length})</div>
+    ${pl.map(p=>`<div style="display:flex;align-items:center;gap:7px;padding:4px 0;font-size:12px">${avHtml(p,24)}<span style="font-weight:500;flex:1">${p.name}${p.id===myId?" <span style='font-size:10px;color:var(--text3)'>(você)</span>":""}</span>${p.online?`<span class="online-dot"></span>`:""}</div>`).join("")}
+  </div>`;
+}
+function sbDiag(){
+  const pid=gs.currentProject;const fm=gs.fleetMap||{};const pl=players();
+  const ops=pid?Object.keys(fm[pid]||{}).map(id=>pl.find(p=>p.id===id)).filter(Boolean):[];
+  const diag=Object.keys(gs.diagnosed||{});
+  return `<div class="sb-block"><div class="sb-title">👥 Operadores do Projeto (${ops.length})</div>
+    <div class="op-list">${ops.length?ops.map(p=>`<div class="op-av"><div class="op-circle" style="background:${p.color}">${p.initials}</div><div class="op-name">${p.name.split(" ")[0]}</div></div>`).join(""):`<span style="font-size:11px;color:var(--text3)">Sorteie um projeto</span>`}</div>
+  </div>
+  <div class="sb-block"><div class="sb-title">📋 Progresso do Trimestre</div>
+    ${PROJS.map(p=>`<div class="prog-item"><div class="prog-dot ${diag.includes(p.id)?"pd-done":"pd-pend"}"></div><div class="prog-name">${p.e} ${p.name}</div><span class="prog-st ${diag.includes(p.id)?"ps-done":"ps-pend"}">${diag.includes(p.id)?"✓":"Pendente"}</span></div>`).join("")}
+  </div>
+  <div class="sb-block"><div class="sb-title">👥 Online (${pl.filter(p=>p.online).length})</div>
+    ${pl.map(p=>`<div style="display:flex;align-items:center;gap:7px;padding:3px 0;font-size:12px">${avHtml(p,22)}<span style="font-weight:500;flex:1">${p.name}</span>${p.online?`<span class="online-dot"></span>`:""}</div>`).join("")}
+  </div>`;
+}
+function sbMkt(){
+  const inv=gs.investments||{};const probs=getProblems();
+  const totals={};probs.forEach(([l])=>{const v=inv[l]||{};totals[l]=Object.values(v).reduce((s,x)=>s+(x.amount||0),0)});
+  const sorted=Object.entries(totals).sort((a,b)=>b[1]-a[1]);const max=sorted[0]?.[1]||1;
+  const pl=players();
+  return `<div class="sb-block"><div class="sb-title">🏦 Ranking de Investimentos</div>
+    ${sorted.map(([l,v],i)=>`<div class="rank-row"><div class="rr-num">${i+1}°</div><div class="rr-name">${l}</div><div class="rr-bar"><div class="rr-fill" style="width:${Math.round(v/max*100)}%"></div></div><div class="rr-val">${v} 💲</div></div>`).join("")||`<span style="font-size:11px;color:var(--text3)">Aguardando...</span>`}
+  </div>
+  <div class="sb-block"><div class="sb-title">👥 Online (${pl.filter(p=>p.online).length})</div>
+    ${pl.map(p=>`<div style="display:flex;align-items:center;gap:7px;padding:3px 0;font-size:12px">${avHtml(p,22)}<span style="font-weight:500;flex:1">${p.name}</span>${p.online?`<span class="online-dot"></span>`:""}</div>`).join("")}
+  </div>`;
+}
+function sbRef(){
+  const totalPts=Object.values(gs.investments||{}).flatMap(v=>Object.values(v)).reduce((s,v)=>s+(v.amount||0),0);
+  return `<div class="sb-block"><div class="sb-title">📊 Resumo do Trimestre</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:7px">
+      <div style="text-align:center;padding:10px 6px;background:var(--bg2);border-radius:var(--r-sm)"><div style="font-size:15px;font-weight:800">${PROJS.length}</div><div style="font-size:9px;color:var(--text2)">Projetos</div></div>
+      <div style="text-align:center;padding:10px 6px;background:var(--bg2);border-radius:var(--r-sm)"><div style="font-size:15px;font-weight:800">${totalPts}</div><div style="font-size:9px;color:var(--text2)">DevPoints</div></div>
+      <div style="text-align:center;padding:10px 6px;background:var(--bg2);border-radius:var(--r-sm)"><div style="font-size:15px;font-weight:800">${players().length}</div><div style="font-size:9px;color:var(--text2)">Participantes</div></div>
+    </div>
+  </div>
+  <div class="sb-block"><div class="sb-title">🏅 Distintivos</div>
+    <div class="dist-item"><div class="dist-medal dm-gold">🐛</div><div><div style="font-size:12px;font-weight:700">The Bug Hunter</div><div style="font-size:10px;color:var(--text2)">Gargalo mais investido pelo time.</div></div></div>
+    <div class="dist-item"><div class="dist-medal dm-green">😇</div><div><div style="font-size:12px;font-weight:700">The Angel Investor</div><div style="font-size:10px;color:var(--text2)">DevPoints distribuídos de forma equilibrada.</div></div></div>
+    <div class="dist-item"><div class="dist-medal dm-blue">👑</div><div><div style="font-size:12px;font-weight:700">The Refactor King</div><div style="font-size:10px;color:var(--text2)">Liderou o plano de ação final.</div></div></div>
+  </div>
+  <div class="sb-block"><div class="sb-title">📤 Exportar</div><button class="btn btn-sec w100" onclick="copyMd()">📋 Copiar Markdown</button></div>`;
+}
+
+/* ── URL PARAM ── */
+window.addEventListener("load",()=>{
+  hideLoader();
+  const p=new URLSearchParams(location.search).get("sala");
+  if(p){setRole("player");document.getElementById("inputCode").value=p.toUpperCase();toast(`🔗 Sala ${p} detectada! Digite seu nome e entre.`);}
+});
+</script>
+</body>
+</html>
